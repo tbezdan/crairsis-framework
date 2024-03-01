@@ -1,6 +1,6 @@
-__pycache__/
+**/__pycache__/
 temp.ipynb
-.DS_Store
-file.log
-analysis.py
-andreja.py
+**/.DS_Store
+src/file.log
+src/analysis.py
+src/andreja.py
