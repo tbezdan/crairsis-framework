@@ -319,6 +319,7 @@ def perform_training_and_optimization(
 
         for covid in dataset["covid_era"].unique():
             filtered_data = dataset[dataset["covid_era"] == covid]
+            filtered_data = filtered_data.drop("covid_era", axis=1)
 
             for target in targets:
                 print()
