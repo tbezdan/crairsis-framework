@@ -1,0 +1,11 @@
+**/__pycache__/
+temp.ipynb
+**/.DS_Store
+src/file.log
+src/analysis.py
+src/andreja.py
+/.vscode/
+/catboost_info/
+/crairsis/
+/file.log
+/selected_root.txt
