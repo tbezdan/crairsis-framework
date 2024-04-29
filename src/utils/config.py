@@ -2,7 +2,8 @@ from mealpy import FloatVar, IntegerVar
 import os
 
 # ROOT = "/Users/timea/Documents/Projekti/craAIRsis/Covid BG"
-ROOT = "/Users/timea/Documents/Projekti/craAIRsis/TEST"
+# ROOT = "/Users/timea/Documents/Projekti/craAIRsis/TEST"
+ROOT = r"C:\Users\tbezdan\Desktop\crAIRsis data"
 
 original_datasets_path = os.path.join(ROOT, "original datasets")
 

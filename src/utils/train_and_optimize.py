@@ -306,6 +306,7 @@ def perform_training_and_optimization(
         site, _ = os.path.splitext(filename)
         logger.info(f"File: {site}")
         dataset = pd.read_csv(file_path)
+        dataset = dataset.dropna(subset=["covid_era"])
         dataset["id"] = range(len(dataset))
         dataset = preprocess_dataset(dataset)
         dataset.to_csv(
@@ -314,6 +315,7 @@ def perform_training_and_optimization(
         )
 
         covid_era_values = dataset["covid_era"].unique().tolist()
+        print(covid_era_values, "covid_era_values")
 
         create_json_options(covid_era_values, targets, site, json_path)
 

@@ -7,6 +7,7 @@ import os
 import warnings
 
 warnings.filterwarnings("ignore")
+
 from utils.logger import setup_logger
 
 logger = setup_logger(__name__)
@@ -21,6 +22,7 @@ def process_data(target, file, site, covid):
     )
 
     X = pd.read_csv(data_path)
+
     model = joblib.load(model_path)
 
     test_data = X[X["Usage"] == "Test"]

@@ -16,6 +16,7 @@ import pandas as pd
 import json
 import os
 
+
 # /Users/timea/miniforge3/envs/crairsis/bin/python "/Users/timea/Documents/Projekti/craAIRsis/Covid BG/src/main.py"
 
 logger = setup_logger(__name__)
@@ -56,14 +57,14 @@ def sage_calculation(best_models):
 
 
 def main():
-    create_folders()
-    train_and_optimize_models()
-    format_best_models(output_path)
+    # create_folders()
+    # train_and_optimize_models()
+    # format_best_models(output_path)
     best_models = pd.read_csv(best_models_path)
-    format_detailed_metrics(output_path)
-    evaluate_best_models(best_models)
-    shap_calculation(best_models)
-    perform_shap_clustering()
+    # format_detailed_metrics(output_path)
+    # evaluate_best_models(best_models)
+    # shap_calculation(best_models)
+    # perform_shap_clustering()
     sage_calculation(best_models)
 
 
