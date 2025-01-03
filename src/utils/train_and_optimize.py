@@ -1,20 +1,25 @@
 import os
 import pandas as pd
 from utils.data_loader import load_and_preprocess_data
-from utils.metrics import calculate_metrics, log_metrics
+from utils.metrics import (
+    calculate_regression_metrics,
+    calculate_classification_metrics,
+    confusion_matrix_report,
+    log_metrics,
+)
+
+import re
+from sklearn.metrics import classification_report, confusion_matrix
+
+
 from optimization.optimizer import optimize
 from utils.logger import setup_logger
 from utils.config import algorithm_settings
 import datetime
 import numpy as np
-from ml_models.catboost_model import CatBoostModel
-from ml_models.adaboost_model import AdaBoostModel
-from ml_models.lightgbm_model import LGBMModel
-from ml_models.xgboost_model import XGBoostModel
-from ml_models.extratrees_model import ExtraTreesModel
-from ml_models.gradientboosting_model import GradientBoostingModel
-from ml_models.histgradientboosting_model import HistGradientBoostingModel
-from sklearn.model_selection import cross_val_predict
+
+
+from sklearn.model_selection import cross_val_predict, StratifiedKFold, KFold
 from utils.config import models_path, output_path, json_path, original_data_id_folder
 from sklearn.model_selection import KFold
 from sklearn.preprocessing import LabelEncoder
@@ -25,41 +30,94 @@ random_seed = 42
 np.random.seed(random_seed)
 
 
-model_registry = {
-    "CatBoostModel": CatBoostModel,
-    "AdaBoostModel": AdaBoostModel,
-    "LGBMModel": LGBMModel,
-    "XGBoostModel": XGBoostModel,
-    "ExtraTreesModel": ExtraTreesModel,
-    "GradientBoostingModel": GradientBoostingModel,
-    "HistGradientBoostingModel": HistGradientBoostingModel,
-}
-
-
-def evaluate_ml_models(preprocessed_data, site, covid, target, all_results):
-    print()
+def evaluate_ml_models(
+    preprocessed_data,
+    filename,
+    filter_value,
+    filter_column,
+    target,
+    all_results,
+    task_type,
+    model_registry,
+):
     logger.info(f"----------ML model evaluation----------")
     temp_results = []
+
+    if task_type == "classification":
+        target_distribution = preprocessed_data[target].value_counts()
+        logger.info(f"Target distribution:\n{target_distribution}")
+
+        if len(target_distribution) < 2:
+            logger.warning(
+                f"Target variable {target} contains only one unique value. Skipping evaluation."
+            )
+            return [], all_results
+
     for model_name, model_cls in model_registry.items():
         model = model_cls()
-        print()
-        logger.info(f"Evaluating: {model_name} CV")
+        logger.info(f"\n\nEvaluating: {model_name} CV")
         model_instance = model.get_sklearn_estimator()
 
-        cv = KFold(n_splits=5, shuffle=True, random_state=42)
+        if task_type == "classification":
+            cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+        else:
+            cv = KFold(n_splits=5, shuffle=True, random_state=42)
+
         y_pred = cross_val_predict(
             model_instance,
             preprocessed_data.drop(columns=[target]),
             preprocessed_data[target],
             cv=cv,
         )
-        metrics = calculate_metrics(preprocessed_data[target], y_pred)
+
+        if task_type == "classification":
+
+            conf_matrix = confusion_matrix(preprocessed_data[target], y_pred)
+            logger.info(f"Confusion Matrix:\n{conf_matrix}")
+
+            y_proba = cross_val_predict(
+                model_instance,
+                preprocessed_data.drop(columns=[target]),
+                preprocessed_data[target],
+                cv=cv,
+                method="predict_proba",
+            )
+
+            if len(np.unique(preprocessed_data[target])) > 2:
+                # Multi-class classification
+                y_proba = (
+                    y_proba if y_proba.ndim > 1 else np.expand_dims(y_proba, axis=1)
+                )
+
+                metrics = calculate_classification_metrics(
+                    preprocessed_data[target], y_pred, y_proba, multi_class="ovr"
+                )
+            else:
+                # Binary classification
+                y_proba = y_proba[:, 1] if y_proba.ndim > 1 else y_proba
+                metrics = calculate_classification_metrics(
+                    preprocessed_data[target], y_pred, y_proba
+                )
+
+            report = classification_report(
+                preprocessed_data[target], y_pred, output_dict=True, zero_division=0
+            )
+
+            # Extracting metrics from the classification report
+            for label, metrics_dict in report.items():
+                if isinstance(metrics_dict, dict):
+                    for metric_name, metric_value in metrics_dict.items():
+                        metrics[f"{label} {metric_name}"] = metric_value
+
+        else:
+            metrics = calculate_regression_metrics(preprocessed_data[target], y_pred)
 
         result = {
-            "ML Model": model_name,
-            "Target": target,
-            "Filename": site,
-            "Covid": covid,
+            "ml_model": model_name,
+            "target": target,
+            "filename": filename,
+            "filter_column": filter_column,
+            "filter_value": filter_value,
             **metrics,
         }
 
@@ -69,25 +127,33 @@ def evaluate_ml_models(preprocessed_data, site, covid, target, all_results):
 
     results_df = pd.DataFrame(temp_results)
 
-    top_models_df = results_df.sort_values(by="R2", ascending=False).head(3)
-    top_models_df = top_models_df.applymap(
+    selected_columns = (
+        ["ml_model", "f1_score"]
+        if task_type == "classification"
+        else ["ml_model", "r2"]
+    )
+
+    top_models_df = results_df.sort_values(
+        by="r2" if task_type == "regression" else "f1_score", ascending=False
+    ).head(3)
+    top_models_df = top_models_df[selected_columns].applymap(
         lambda x: f"{x:.4f}" if isinstance(x, float) else x
     )
 
-    df_string = top_models_df.to_string(index=False)
-    print()
-    logger.info(f"Top models:\n{df_string}")
-    top_models = top_models_df["ML Model"].tolist()
+    logger.info(f"Top models:\n{top_models_df.to_string(index=False)}")
+    top_models = top_models_df["ml_model"].tolist()
     return top_models, all_results
 
 
 def optimize_and_evaluate_model(
+    datetime_col,
     filtered_data,
     X,
     y,
     model_name,
-    site,
-    covid,
+    filename,
+    filter_column,
+    filter_value,
     target,
     mh_algorithms,
     num_epochs,
@@ -95,13 +161,15 @@ def optimize_and_evaluate_model(
     optimized_results_cv,
     optimized_results,
     combined_optimization_history,
+    task_type,
+    model_registry,
 ):
+
     model_optim_cls = model_registry[model_name]
     model_instance = model_optim_cls()
     model_constructor = model_instance.get_sklearn_estimator
 
     if algorithm_settings[model_name]["bounds"]:
-
         for metaheuristic in mh_algorithms:
             optimized_model, best_hyperparams, optimization_history = optimize(
                 model_constructor=model_constructor,
@@ -112,26 +180,57 @@ def optimize_and_evaluate_model(
                 metaheuristic=metaheuristic,
                 epoch=num_epochs,
                 pop_size=population_size,
-                filename=site,
+                filename=filename,
+                task_type=task_type,
             )
 
-            # Evaluate the optimized model with cross-validation and calculate metrics
-            cv = KFold(n_splits=5, shuffle=True, random_state=42)
-            y_pred_optimized_cv = cross_val_predict(optimized_model, X, y, cv=cv)
-            metrics_optimized_cv = calculate_metrics(y, y_pred_optimized_cv)
+            if task_type == "classification":
+                cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+            else:
+                cv = KFold(n_splits=5, shuffle=True, random_state=42)
 
-            # Log the optimized metrics
-            print()
+            y_pred_optimized_cv = cross_val_predict(optimized_model, X, y, cv=cv)
+
+            if task_type == "classification":
+                y_proba_optimized_cv = cross_val_predict(
+                    optimized_model, X, y, cv=cv, method="predict_proba"
+                )
+
+                if len(np.unique(y)) > 2:
+                    # Multi-class classification
+                    y_proba_optimized_cv = (
+                        y_proba_optimized_cv
+                        if y_proba_optimized_cv.ndim > 1
+                        else np.expand_dims(y_proba_optimized_cv, axis=1)
+                    )
+                    metrics_optimized_cv = calculate_classification_metrics(
+                        y, y_pred_optimized_cv, y_proba_optimized_cv, multi_class="ovr"
+                    )
+                else:
+                    # Binary classification
+                    y_proba_optimized_cv = (
+                        y_proba_optimized_cv[:, 1]
+                        if y_proba_optimized_cv.ndim > 1
+                        else y_proba_optimized_cv
+                    )
+                    metrics_optimized_cv = calculate_classification_metrics(
+                        y, y_pred_optimized_cv, y_proba_optimized_cv
+                    )
+            else:
+                metrics_optimized_cv = calculate_regression_metrics(
+                    y, y_pred_optimized_cv
+                )
+
             logger.info(f"Optimized {model_name} CV by {metaheuristic}")
             log_metrics(metrics_optimized_cv, logger)
 
-            # Append the results to the optimized results list
             optimized_result_entry = {
-                "ML Model": model_name,
-                "Metaheuristic": metaheuristic,
-                "Target": target,
-                "Filename": site,
-                "Covid": covid,
+                "ml_model": model_name,
+                "metaheuristic": metaheuristic,
+                "target": target,
+                "filename": filename,
+                "filter_column": filter_column,
+                "filter_value": filter_value,
                 **metrics_optimized_cv,
             }
             optimized_results_cv.append(optimized_result_entry)
@@ -139,17 +238,17 @@ def optimize_and_evaluate_model(
             for i, (g_best_value, runtime) in enumerate(
                 zip(optimization_history[0][0], optimization_history[0][1]), start=1
             ):
-
                 temp_df = pd.DataFrame(
                     {
-                        "Iteration": [i],
-                        "G_Best": [g_best_value],
-                        "Runtime": [runtime],
-                        "ML_Model": [model_name],
-                        "Metaheuristic": [metaheuristic],
-                        "Site": [site],
-                        "Covid": [covid],
-                        "Target": [target],
+                        "iteration": [i],
+                        "g_best": [g_best_value],
+                        "runtime": [runtime],
+                        "ml_model": [model_name],
+                        "metaheuristic": [metaheuristic],
+                        "filename": [filename],
+                        "filter_column": [filter_column],
+                        "filter_value": [filter_value],
+                        "target": [target],
                     }
                 )
 
@@ -157,19 +256,22 @@ def optimize_and_evaluate_model(
                     [combined_optimization_history, temp_df],
                     ignore_index=True,
                 )
+
             optimized_results = train_evaluate_save_model(
+                datetime_col,
                 filtered_data=filtered_data,
                 model_name=model_name,
                 best_hyperparams=best_hyperparams,
-                site=site,
-                covid=covid,
+                filename=filename,
+                filter_column=filter_column,
+                filter_value=filter_value,
                 target=target,
-                output_dir=output_path,
                 models_path=models_path,
                 metaheuristic=metaheuristic,
                 optimized_results=optimized_results,
+                task_type=task_type,
+                model_registry=model_registry,
             )
-
     else:
         logger.warning(f"No hyperparameters found for {model_name}")
 
@@ -181,57 +283,72 @@ def optimize_and_evaluate_model(
 
 
 def train_evaluate_save_model(
+    datetime_col,
     filtered_data,
     model_name,
     best_hyperparams,
-    site,
-    covid,
+    filename,
+    filter_value,
+    filter_column,
     target,
-    output_dir,
     models_path,
     metaheuristic,
     optimized_results,
+    task_type,
+    model_registry,
 ):
-    # Split the data
     X_train, X_test, y_train, y_test = load_and_preprocess_data(
         filtered_data,
         target,
-        output_dir=output_dir,
-        site=site,
-        covid=covid,
+        datetime_col,
+        filename=filename,
+        filter_column=filter_column,
+        filter_value=filter_value,
         target_name=target,
         split_data=True,
+        task_type=task_type,
     )
 
-    # Initialize the model with optimized hyperparameters
     model_cls = model_registry[model_name]
     optimized_model = model_cls(**best_hyperparams)
 
-    # Train the optimized model
     optimized_model.train(X_train, y_train)
 
-    # Predict on test set and calculate metrics
     y_pred_optimized = optimized_model.predict(X_test)
-    metrics_optimized = calculate_metrics(y_test, y_pred_optimized)
-    print()
+
+    if task_type == "classification":
+        y_proba_optimized = optimized_model.predict_proba(X_test)
+        if len(np.unique(y_train)) > 2:
+            # Multi-class classification
+            metrics_optimized = calculate_classification_metrics(
+                y_test, y_pred_optimized, y_proba_optimized, multi_class="ovr"
+            )
+        else:
+            # Binary classification
+            y_proba_optimized = y_proba_optimized[:, 1]
+            metrics_optimized = calculate_classification_metrics(
+                y_test, y_pred_optimized, y_proba_optimized
+            )
+    else:
+        metrics_optimized = calculate_regression_metrics(y_test, y_pred_optimized)
+
     logger.info(f"Optimized {model_name} by {metaheuristic}")
     log_metrics(metrics_optimized, logger)
 
-    # Save the optimized model
-    model_filename = f"site_{site}_covid_{covid}_target_{target}_ml_model_{model_name}_mh_algo_{metaheuristic}.joblib"
+    model_filename = f"filename_{filename}_filter_col_{filter_column}_filter_val_{filter_value}_target_{target}_ml_model_{model_name}_mh_algo_{metaheuristic}.joblib"
     optimized_model.save(os.path.join(models_path, model_filename))
 
-    # Update the optimized results
     optimized_result_entry = {
-        "ML Model": model_name,
-        "Metaheuristic": metaheuristic,
-        "Target": target,
-        "Filename": site,
-        "Covid": covid,
+        "ml_model": model_name,
+        "metaheuristic": metaheuristic,
+        "target": target,
+        "filename": filename,
+        "filter_column": filter_column,
+        "filter_value": filter_value,
+        "train_size": len(X_train),
+        "test_size": len(X_test),
+        "num_columns": X_train.shape[1],
         **metrics_optimized,
-        "Train Size": len(X_train),
-        "Test Size": len(X_test),
-        "Num Columns": X_train.shape[1],
         **best_hyperparams,
     }
     optimized_results.append(optimized_result_entry)
@@ -239,13 +356,13 @@ def train_evaluate_save_model(
     return optimized_results
 
 
-def preprocess_dataset(dataset):
+def preprocess_dataset(dataset, datetime_col):
     """
     Preprocess the dataset by encoding categorical features.
     """
     categorical_columns = dataset.select_dtypes(include=["object"]).columns
     categorical_columns = [
-        col for col in categorical_columns if col not in ["Datetime"]
+        col for col in categorical_columns if col not in [datetime_col]
     ]
 
     for col in categorical_columns:
@@ -255,111 +372,207 @@ def preprocess_dataset(dataset):
     return dataset
 
 
-import json
-import os
-
-
-def create_json_options(covid_era_values, targets, site, json_path):
+def create_json_options(filter_values, targets, filename, json_path, filter_column):
     """
-    Creates a JSON file with COVID era and target options for a given site.
+    Creates a JSON file with filter values and target options for a given file.
 
     Parameters:
-    - covid_era_values: List of unique COVID era values.
+    - filter_values: List of unique filter values.
     - targets: List of target categories.
-    - site: Name of the site or dataset (filename without extension).
+    - filename: Name of the file or dataset (filename without extension).
     - json_path: Path to the directory where the JSON file should be saved.
+    - filter_column: The column name used for filtering.
     """
     # Construct the options dictionary
+    if filter_column == None:
+        filter_values = [filter_values]
     options = {
-        "covidOptions": [
-            {"label": str(covid), "value": str(covid)} for covid in covid_era_values
+        "filterOptions": [
+            {"label": str(value), "value": str(value)} for value in filter_values
         ],
         "targetOptions": [{"label": target, "value": target} for target in targets],
         "targetList": targets,
-        "covidList": covid_era_values,
+        "filterList": filter_values,
+        "filterColumn": filter_column,
     }
 
     # Define the JSON file path for the current dataset
-    json_file_path = os.path.join(json_path, f"{site}_options.json")
+    json_file_path = os.path.join(json_path, f"{filename}_options.json")
 
     # Write the options to the JSON file
     with open(json_file_path, "w") as file:
         json.dump(options, file, indent=4)
 
-    logger.info(f"JSON options file saved for {site}")
+    logger.info(f"JSON options file saved for {filename}")
+
+
+def clean_filename(filename):
+
+    # Separate the base filename and extension
+    base, ext = os.path.splitext(filename)
+
+    # Apply cleaning to the base filename (without the extension)
+    base = base.lower()
+    base = base.replace(" ", "_")
+    base = re.sub(r"[^a-zA-Z0-9_-]", "", base)
+
+    # Return the cleaned base filename with the original extension
+    return base  # + ext
 
 
 def perform_training_and_optimization(
-    datasets_path, num_epochs, population_size, targets, mh_algorithms
+    datasets_path,
+    num_epochs,
+    population_size,
+    targets,
+    mh_algorithms,
+    task_type,
+    filter_column,
+    datetime_col,
+    model_registry,
 ):
     all_results = []
     optimized_results = []
     optimized_results_cv = []
     combined_optimization_history = pd.DataFrame()
 
-    for filename in os.listdir(datasets_path):
+    for file in os.listdir(datasets_path):
 
-        if not filename.endswith(".csv") or filename == ".DS_Store":
+        if not file.endswith(".csv") or file == ".DS_Store":
             continue
 
-        file_path = os.path.join(datasets_path, filename)
-        site, _ = os.path.splitext(filename)
-        logger.info(f"File: {site}")
+        file_path = os.path.join(datasets_path, file)
+
+        filename = clean_filename(file)
+        logger.info(f"File: {filename}")
         dataset = pd.read_csv(file_path)
-        dataset = dataset.dropna(subset=["covid_era"])
+
         dataset["id"] = range(len(dataset))
-        dataset = preprocess_dataset(dataset)
-        dataset.to_csv(
-            os.path.join(original_data_id_folder, f"{site}.csv"),
-            index=False,
-        )
 
-        covid_era_values = dataset["covid_era"].unique().tolist()
-        print(covid_era_values, "covid_era_values")
+        if filter_column and filter_column in dataset.columns:
+            filter_values = dataset[filter_column].unique().tolist()
+            # dataset["id"] = range(len(dataset))
+            dataset = preprocess_dataset(dataset, datetime_col)
+            dataset.to_csv(
+                os.path.join(original_data_id_folder, f"{filename}.csv"),
+                index=False,
+            )
 
-        create_json_options(covid_era_values, targets, site, json_path)
+            for filter_value in filter_values:
+                filtered_data = dataset[dataset[filter_column] == filter_value]
+                filtered_data = filtered_data.drop(filter_column, axis=1)
 
-        for covid in dataset["covid_era"].unique():
-            filtered_data = dataset[dataset["covid_era"] == covid]
-            filtered_data = filtered_data.drop("covid_era", axis=1)
+                for target in targets:
+                    logger.info(
+                        f"-------{filter_column}: {filter_value}------Target: {target}-------"
+                    )
+
+                    preprocessed_data = load_and_preprocess_data(
+                        filtered_data,
+                        target,
+                        datetime_col,
+                        filename=filename,
+                        filter_column=filter_column,
+                        filter_value=filter_value,
+                        target_name=target,
+                        split_data=False,
+                        task_type=task_type,
+                    )
+                    top_models, all_results = evaluate_ml_models(
+                        preprocessed_data,
+                        filename,
+                        filter_column,
+                        filter_value,
+                        target,
+                        all_results,
+                        task_type,
+                        model_registry,
+                    )
+
+                    X = preprocessed_data.drop(columns=[target])
+                    y = preprocessed_data[target]
+
+                    logger.info(f"-------------Optimization-------------")
+
+                    for model_name in top_models:
+                        logger.info(f"Optimizing: {model_name} CV")
+                        (
+                            optimized_results,
+                            optimized_results_cv,
+                            combined_optimization_history,
+                        ) = optimize_and_evaluate_model(
+                            datetime_col,
+                            filtered_data,
+                            X=X,
+                            y=y,
+                            model_name=model_name,
+                            filename=filename,
+                            filter_value=filter_value,
+                            filter_column=filter_column,
+                            target=target,
+                            mh_algorithms=mh_algorithms,
+                            num_epochs=num_epochs,
+                            population_size=population_size,
+                            optimized_results_cv=optimized_results_cv,
+                            optimized_results=optimized_results,
+                            combined_optimization_history=combined_optimization_history,
+                            task_type=task_type,
+                            model_registry=model_registry,
+                        )
+                logger.info(combined_optimization_history)
+        else:
+            filter_values = None
+            # dataset["id"] = range(len(dataset))
+            filtered_data = dataset.copy()
+            filtered_data = preprocess_dataset(filtered_data, datetime_col)
+            filtered_data.to_csv(
+                os.path.join(original_data_id_folder, f"{filename}.csv"),
+                index=False,
+            )
 
             for target in targets:
-                print()
-                logger.info(f"-------Covid: {covid}------Target: {target}-------")
+                logger.info(f"-------Target: {target}-------")
 
                 preprocessed_data = load_and_preprocess_data(
                     filtered_data,
                     target,
-                    output_dir=output_path,
-                    site=site,
-                    covid=covid,
+                    datetime_col,
+                    filename=filename,
                     target_name=target,
                     split_data=False,
+                    task_type=task_type,
                 )
                 top_models, all_results = evaluate_ml_models(
-                    preprocessed_data, site, covid, target, all_results
+                    preprocessed_data,
+                    filename,
+                    filter_column,
+                    filter_values,
+                    target,
+                    all_results,
+                    task_type,
+                    model_registry,
                 )
 
                 X = preprocessed_data.drop(columns=[target])
                 y = preprocessed_data[target]
 
-                print()
                 logger.info(f"-------------Optimization-------------")
 
                 for model_name in top_models:
-                    print()
                     logger.info(f"Optimizing: {model_name} CV")
                     (
                         optimized_results,
                         optimized_results_cv,
                         combined_optimization_history,
                     ) = optimize_and_evaluate_model(
+                        datetime_col,
                         filtered_data,
                         X=X,
                         y=y,
                         model_name=model_name,
-                        site=site,
-                        covid=covid,
+                        filename=filename,
+                        filter_value=None,
+                        filter_column=filter_column,
                         target=target,
                         mh_algorithms=mh_algorithms,
                         num_epochs=num_epochs,
@@ -367,27 +580,28 @@ def perform_training_and_optimization(
                         optimized_results_cv=optimized_results_cv,
                         optimized_results=optimized_results,
                         combined_optimization_history=combined_optimization_history,
+                        task_type=task_type,
+                        model_registry=model_registry,
                     )
-            print(combined_optimization_history)
+            logger.info(combined_optimization_history)
 
-        combined_optimization_history.to_csv(
-            os.path.join(output_path, "results", "optimization_history.csv"),
-            index=False,
-        )
+    create_json_options(filter_values, targets, filename, json_path, filter_column)
 
-        # Save initial ML results to CSV
-        pd.DataFrame(all_results).to_csv(
-            os.path.join(output_path, "results", "ml_models_results.csv"), index=False
-        )
+    combined_optimization_history.to_csv(
+        os.path.join(output_path, "results", "optimization_history.csv"),
+        index=False,
+    )
 
-        # Save optimized model results to CSV
-        pd.DataFrame(optimized_results).to_csv(
-            os.path.join(output_path, "results", "optimized_models_results.csv"),
-            index=False,
-        )
+    pd.DataFrame(all_results).to_csv(
+        os.path.join(output_path, "results", "ml_models_results.csv"), index=False
+    )
 
-        # Save optimized model results to CSV
-        pd.DataFrame(optimized_results_cv).to_csv(
-            os.path.join(output_path, "results", "optimized_models_results_cv.csv"),
-            index=False,
-        )
+    pd.DataFrame(optimized_results).to_csv(
+        os.path.join(output_path, "results", "optimized_models_results.csv"),
+        index=False,
+    )
+
+    pd.DataFrame(optimized_results_cv).to_csv(
+        os.path.join(output_path, "results", "optimized_models_results_cv.csv"),
+        index=False,
+    )

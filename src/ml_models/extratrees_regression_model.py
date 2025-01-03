@@ -1,35 +1,35 @@
-from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.ensemble import ExtraTreesRegressor
 from ml_models.base_model import BaseModel
 
 
-class GradientBoostingModel(BaseModel):
+class ExtraTreesRegressionModel(BaseModel):
     def __init__(self, random_seed=42, **kwargs):
         super().__init__()
         # Set the random seed in kwargs if not already set
         kwargs.setdefault("random_state", random_seed)
-        # Initialize GradientBoostingRegressor with default parameters
-        # Any parameters passed via kwargs will override Gradient Boosting's defaults
-        self.model = GradientBoostingRegressor(**kwargs)
+        # Initialize ExtraTreesRegressor with default parameters
+        # Any parameters passed via kwargs will override ExtraTrees' defaults
+        self.model = ExtraTreesRegressor(**kwargs)
 
     def train(self, X_train, y_train, **kwargs):
         """
-        Train the Gradient Boosting model on the given dataset.
+        Train the ExtraTrees model on the given dataset.
 
         Parameters:
         - X_train: Features of the training set.
         - y_train: Targets of the training set.
-        - kwargs: Additional arguments to pass to the Gradient Boosting fit method.
+        - kwargs: Additional arguments to pass to the ExtraTrees fit method.
         """
         self.model.fit(X_train, y_train, **kwargs)
 
     def evaluate(self, X_test, y_test, **kwargs):
         """
-        Evaluate the Gradient Boosting model on the given test dataset.
+        Evaluate the ExtraTrees model on the given test dataset.
 
         Parameters:
         - X_test: Features of the test set.
         - y_test: True targets of the test set.
-        - kwargs: Additional arguments to pass to the evaluation method of Gradient Boosting.
+        - kwargs: Additional arguments to pass to the evaluation method of ExtraTrees.
 
         Returns:
         - The score of the model on the provided test data.
@@ -47,4 +47,4 @@ class GradientBoostingModel(BaseModel):
         - A new instance of the sklearn estimator with specified hyperparameters.
         """
         kwargs.setdefault("random_state", random_seed)
-        return GradientBoostingRegressor(**kwargs)
+        return ExtraTreesRegressor(**kwargs)

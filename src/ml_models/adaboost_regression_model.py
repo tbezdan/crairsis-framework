@@ -2,7 +2,7 @@ from sklearn.ensemble import AdaBoostRegressor
 from ml_models.base_model import BaseModel
 
 
-class AdaBoostModel(BaseModel):
+class AdaBoostRegressionModel(BaseModel):
     def __init__(self, random_seed=42, **kwargs):
         super().__init__()
         # Set the random seed in kwargs if not already set

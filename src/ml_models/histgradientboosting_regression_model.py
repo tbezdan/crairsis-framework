@@ -2,7 +2,7 @@ from sklearn.ensemble import HistGradientBoostingRegressor
 from ml_models.base_model import BaseModel
 
 
-class HistGradientBoostingModel(BaseModel):
+class HistGradientBoostingRegressionModel(BaseModel):
     def __init__(self, random_seed=42, **kwargs):
         super().__init__()
         # Set the random seed in kwargs if not already set

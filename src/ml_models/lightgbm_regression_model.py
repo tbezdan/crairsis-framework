@@ -5,7 +5,7 @@ import lightgbm as lgb
 from ml_models.base_model import BaseModel
 
 
-class LGBMModel(BaseModel):
+class LGBMRegressionModel(BaseModel):
     def __init__(self, random_seed=42, **kwargs):
         super().__init__()
         # Set the random seed in kwargs if not already set
