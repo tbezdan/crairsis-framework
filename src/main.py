@@ -1,5 +1,5 @@
 from utils.train_and_optimize import perform_training_and_optimization
-from xai.shap_analysis import perform_shap_analysis
+from xai.shap_analysis import perform_shap_analysis, perform_shap_interactions_analysis
 from xai.sage_analysis import perform_sage_analysis
 from xai.shap_clustering import perform_shap_clustering
 from utils.best_eval import perform_best_models_evaluation
@@ -229,6 +229,29 @@ def shap_calculation(best_models, task_type, data_usage, datetime_col):
     )
 
 
+def shap_interaction(best_models, task_type, data_usage, datetime_col):
+    shap_interactions_start_time = time.perf_counter()
+    shap_interactions_start_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    print(f"shap_interactions started at {shap_interactions_start_timestamp}")
+
+    perform_shap_interactions_analysis(
+        best_models, filter_col, task_type, data_usage, datetime_col
+    )
+
+    shap_interactions_end_time = time.perf_counter()
+    shap_interactions_end_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    shap_interactions_exec_time = (
+        shap_interactions_end_time - shap_interactions_start_time
+    )
+    print(f"shap_interactions ended at {shap_interactions_end_timestamp}")
+    log_execution_time(
+        "shap_interactions",
+        shap_interactions_exec_time,
+        shap_interactions_start_timestamp,
+        shap_interactions_end_timestamp,
+    )
+
+
 def shap_clustering(
     task_type,
     dimensionality_reduction_method,
@@ -283,16 +306,17 @@ def execute_main_tasks():
     create_folders()
     # train_and_optimize_models(filter_col, datetime_col)
     # format_best_models(output_path, task_type=task_type)
-    # best_models = pd.read_csv(best_models_path)
+    best_models = pd.read_csv(best_models_path)
     # format_detailed_metrics(output_path, task_type)
     # evaluate_best_models(best_models, task_type, data_usage, datetime_col)
-    # shap_calculation(best_models, task_type, data_usage, datetime_col)
-    shap_clustering(
-        task_type,
-        dimensionality_reduction_method,
-        perform_subclustering,
-        subcluster_prob_threshold,
-    )
+    shap_calculation(best_models, task_type, data_usage, datetime_col)
+    shap_interaction(best_models, task_type, data_usage, datetime_col)
+    # shap_clustering(
+    #     task_type,
+    #     dimensionality_reduction_method,
+    #     perform_subclustering,
+    #     subcluster_prob_threshold,
+    # )
     # sage_calculation(best_models, task_type, data_usage, datetime_col, threshold)
 
 
