@@ -1,4 +1,3 @@
-from utils.config import ROOT
 import os
 
 
@@ -13,7 +12,7 @@ def format_time(seconds):
 
 
 def log_execution_time(
-    function_name, execution_time_seconds, start_timestamp, end_timestamp
+    ROOT, function_name, execution_time_seconds, start_timestamp, end_timestamp
 ):
     days, hours, minutes, seconds = format_time(execution_time_seconds)
 

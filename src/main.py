@@ -1,16 +1,16 @@
 from utils.train_and_optimize import perform_training_and_optimization
-from xai.shap_analysis import perform_shap_analysis
+from xai.shap_analysis import perform_shap_analysis, perform_shap_interactions_analysis
+from xai.nshap_analysis import perform_nshap_analysis
+from xai.gshap_analysis import perform_gshap_analysis
 from xai.sage_analysis import perform_sage_analysis
 from xai.shap_clustering import perform_shap_clustering
+from xai.isage_analysis import perform_isage_analysis
 from utils.best_eval import perform_best_models_evaluation
 from utils.logger import setup_logger
-from utils.config import (
-    best_models_path,
-    original_datasets_path,
-    output_path,
-    json_path,
-    paths_to_check,
-)
+from datetime import datetime
+from utils.folder_config import configure_paths
+
+
 from utils.result_formatter import format_best_models, format_detailed_metrics
 import pandas as pd
 import json
@@ -28,6 +28,9 @@ from ml_models.gradientboosting_classification_model import (
 from ml_models.histgradientboosting_classification_model import (
     HistGradientBoostingCls,
 )
+from ml_models.balanced_random_forest_classification_model import (
+    BalancedRandomForestCls,
+)
 
 
 from ml_models.adaboost_regression_model import AdaBoostRegressionModel
@@ -38,68 +41,112 @@ from ml_models.gradientboosting_regression_model import GradientBoostingRegressi
 from ml_models.histgradientboosting_regression_model import (
     HistGradientBoostingRegressionModel,
 )
-from ml_models.balanced_random_forest_classification_model import (
-    BalancedRandomForestCls,
-)
 
 
 from utils.setup_logger import log_setup_info
 
-# /Users/timea/miniforge3/envs/crairsis/bin/python "/Users/timea/Documents/Projekti/craAIRsis/Covid BG/src/main.py"
 
 logger = setup_logger(__name__)
 
-# ovde ce iz config fajla uzeti parametre (from Milos)
-user_name = "timea_bezdan"
-
-
-num_epochs = 5
-population_size = 25
-
-# targets = ["m79", "m93"]
-# targets = ['PM2_5_Aerosol_PM2_5_6001'] #, 'Carbon_monoxide_Air_10', 'Ozone_Air_7', 'Sulphur_dioxide_Air_1', 'Nitrogen_dioxide_Air_8', 'Nitrogen_monoxide_Air_38', 'Nitrogen_oxides_Air_9']
-targets = [
-    "Acetamiprid",
-    "Azoxystrobin",
-    "Boscalid",
-    "Chlorantraniliprole",
-    "Difenoconazole",
-    "Fluopiram",
-    "Fluxapyroxad",
-    "Metalaxyl",
-]
-
-# mh_algorithms = ["SCA", "HHO"]
-mh_algorithms = ["SCA"]
-
-
 # targets = ["PM2_5_Aerosol_PM2_5_6001"]
 # ["cls", "crai"]
-mh_algorithms = ["SCA", "HHO"]
-filter_col = "CRAI"  # "CRAI"  # None #"covid_era"
-task_type = "regression"  # "classification"  # regression
-data_usage = (
-    "test"  # "train_and_test"  # "test" # two possible options: train_and_test, test
-)
-datetime_col = "Datetime"  # "Datetime" #None
-threshold = 90  # default
+# task_type = "regression"  # "classification"  # regression
+# "train_and_test"  # "test" # two possible options: train_and_test, test
+# "Datetime" #None
+# two possible options:"PaCMAP", "UMAP", default "PaCMAP"
+# if perform_subclustering True, the user can specify the value of subcluster_prob_threshold
+# intergroup_difference_column_name = "HouseAge"
+# independent_vars = ["AveRooms", "AveBedrms"]
 
-dimensionality_reduction_method = (
-    "PaCMAP"  # two possible options:"PaCMAP", "UMAP", default "PaCMAP"
-)
 
-perform_subclustering = True  # default: False
+ROOT = r"C:\Users\tbezdan\Desktop\crAIRsis datasets\reg_test"
+paths = configure_paths(ROOT)
 
-if (
-    perform_subclustering
-):  # if perform_subclustering True, the user can specify the value of subcluster_prob_threshold
-    subcluster_prob_threshold = 0.6  # [0,1] default: 0.6
+
+original_datasets_path = paths["original_datasets_path"]
+best_models_path = paths["best_models_path"]
+output_path = paths["output_path"]
+paths_to_check = paths["paths_to_check"]
+models_path = paths["models_path"]
+datasets_path = paths["datasets_path"]
+actual_predicted_folder = paths["actual_predicted_folder"]
+json_path = paths["json_path"]
+original_data_id_folder = paths["original_data_id_folder"]
+gshap_folder = paths["gshap_folder"]
+isage_folder = paths["isage_folder"]
+nshap_folder = paths["nshap_folder"]
+sage_folder = paths["sage_folder"]
+shap_folder = paths["shap_folder"]
+top_sage_features_models_path = paths["top_sage_features_models_path"]
+interactions_folder = paths["interactions_folder"]
+interactions_feature_folder = paths["interactions_feature_folder"]
+shap_clusters_folder = paths["shap_clusters_folder"]
+shap_subclusters_folder = paths["shap_subclusters_folder"]
+
+
+user_name = "timea_bezdan"
+num_epochs = 2
+population_size = 5
+targets = ["target"]
+mh_algorithms = ["SCA"]
+filter_col = None
+task_type = "regression"
+data_usage = "test"
+datetime_col = None
+threshold = 90
+dimensionality_reduction_method = "PaCMAP"
+perform_subclustering = True
+
+if perform_subclustering:
+    subcluster_prob_threshold = 0.6
 else:
     subcluster_prob_threshold = None
 
+
+##########################################################################
+# gshap params
+##########################################################################
+# mediation
+gshap_mediation_independent_vars = ["Latitude", "Longitude"]
+# intergroup difference
+gshap_intergroup_difference_column_name = "HouseAge"
+gshap_intergroup_difference_selected_values = None
+gshap_intergroup_difference_grouping_method = "quantile"
+gshap_intergroup_difference_grouping_value = 75
+
+# hypothesis testing
+gshap_hypothesis_testing_hypothesis_treshold_method = "input"
+gshap_hypothesis_testing_hypothesis_treshold_value = 2
+
+gshap_hypothesis_testing_sample_treshold_method = "input"
+gshap_hypothesis_testing_sample_treshold_value = 1.5
+
+
+gshap_hypothesis_testing_condition = "greater"
+
+
+##########################################################################
+
+
+tasks_to_execute = [
+    # "train_and_optimize_models",
+    # "shap_calculation",
+    # "shap_interaction",
+    # "shap_clustering",
+    # "sage_calculation",
+    # "nshap_calculation",
+    # "gshap_calculation",
+    "isage_calculation",
+]
+
+ml_models = [
+    "BalancedRandomForestCls",
+    "LGBMModel",
+    "ExtraTreesModel",
+    "HistGradientBoostingCls",
+]
+
 # model_registry
-
-
 classification_model_registry = {
     "BalancedRandomForestCls": BalancedRandomForestCls,
     # "AdaBoostModel": AdaBoostClassificationModel,
@@ -119,18 +166,29 @@ regression_model_registry = {
     "HistGradientBoostingModel": HistGradientBoostingRegressionModel,
 }
 
-from datetime import datetime
+model_registry_temp = (
+    classification_model_registry
+    if task_type == "classification"
+    else regression_model_registry
+)
+
+model_registry = {
+    model_name: model_func
+    for model_name, model_func in model_registry_temp.items()
+    if model_name in ml_models
+}
 
 
 def log_setup_info_func():
 
-    model_registry = (
-        classification_model_registry
-        if task_type == "classification"
-        else regression_model_registry
-    )
+    # model_registry = (
+    #     classification_model_registry
+    #     if task_type == "classification"
+    #     else regression_model_registry
+    # )
 
     log_setup_info(
+        ROOT,
         user_name,
         num_epochs,
         population_size,
@@ -156,18 +214,19 @@ def create_folders():
 
 def train_and_optimize_models(filter_col, datetime_col):
 
-    model_registry = (
-        classification_model_registry
-        if task_type == "classification"
-        else regression_model_registry
-    )
+    create_folders()
 
     train_optimize_start_time = time.perf_counter()
     train_optimize_start_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     print(f"train_and_optimize_models started at {train_optimize_start_timestamp}")
 
     perform_training_and_optimization(
+        models_path,
+        output_path,
+        json_path,
+        original_data_id_folder,
         original_datasets_path,
+        datasets_path,
         num_epochs,
         population_size,
         targets,
@@ -178,12 +237,18 @@ def train_and_optimize_models(filter_col, datetime_col):
         model_registry,
     )
 
+    format_best_models(output_path, task_type=task_type)
+    format_detailed_metrics(output_path, task_type)
+    best_models = pd.read_csv(best_models_path)
+    evaluate_best_models(best_models, task_type, data_usage, datetime_col)
+
     train_optimize_end_time = time.perf_counter()
     train_optimize_end_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     train_optimize_exec_time = train_optimize_end_time - train_optimize_start_time
     print(f"train_and_optimize_models ended at {train_optimize_end_timestamp}")
 
     log_execution_time(
+        ROOT,
         "train_and_optimize_models",
         train_optimize_exec_time,
         train_optimize_start_timestamp,
@@ -197,7 +262,14 @@ def evaluate_best_models(best_models, task_type, data_usage, datetime_col):
     print(f"evaluate_best_models started at {evaluate_start_timestamp}")
 
     perform_best_models_evaluation(
-        best_models, filter_col, task_type, data_usage, datetime_col
+        best_models,
+        filter_col,
+        task_type,
+        data_usage,
+        datetime_col,
+        models_path,
+        datasets_path,
+        actual_predicted_folder,
     )
 
     evaluate_end_time = time.perf_counter()
@@ -206,6 +278,7 @@ def evaluate_best_models(best_models, task_type, data_usage, datetime_col):
     print(f"evaluate_best_models ended at {evaluate_end_timestamp}")
 
     log_execution_time(
+        ROOT,
         "evaluate_best_models",
         evaluate_exec_time,
         evaluate_start_timestamp,
@@ -213,19 +286,66 @@ def evaluate_best_models(best_models, task_type, data_usage, datetime_col):
     )
 
 
-def shap_calculation(best_models, task_type, data_usage, datetime_col):
+def shap_calculation(task_type, data_usage, datetime_col):
     shap_start_time = time.perf_counter()
     shap_start_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     print(f"shap_calculation started at {shap_start_timestamp}")
-
-    perform_shap_analysis(best_models, filter_col, task_type, data_usage, datetime_col)
+    best_models = pd.read_csv(best_models_path)
+    perform_shap_analysis(
+        shap_folder,
+        interactions_folder,
+        models_path,
+        datasets_path,
+        interactions_feature_folder,
+        best_models,
+        filter_col,
+        task_type,
+        data_usage,
+        datetime_col,
+    )
 
     shap_end_time = time.perf_counter()
     shap_end_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     shap_exec_time = shap_end_time - shap_start_time
     print(f"shap_calculation ended at {shap_end_timestamp}")
     log_execution_time(
-        "shap_calculation", shap_exec_time, shap_start_timestamp, shap_end_timestamp
+        ROOT,
+        "shap_calculation",
+        shap_exec_time,
+        shap_start_timestamp,
+        shap_end_timestamp,
+    )
+
+
+def shap_interaction(task_type, data_usage, datetime_col):
+    shap_interactions_start_time = time.perf_counter()
+    shap_interactions_start_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    print(f"shap_interactions started at {shap_interactions_start_timestamp}")
+    best_models = pd.read_csv(best_models_path)
+    perform_shap_interactions_analysis(
+        interactions_folder,
+        models_path,
+        datasets_path,
+        interactions_feature_folder,
+        best_models,
+        filter_col,
+        task_type,
+        data_usage,
+        datetime_col,
+    )
+
+    shap_interactions_end_time = time.perf_counter()
+    shap_interactions_end_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    shap_interactions_exec_time = (
+        shap_interactions_end_time - shap_interactions_start_time
+    )
+    print(f"shap_interactions ended at {shap_interactions_end_timestamp}")
+    log_execution_time(
+        ROOT,
+        "shap_interactions",
+        shap_interactions_exec_time,
+        shap_interactions_start_timestamp,
+        shap_interactions_end_timestamp,
     )
 
 
@@ -240,6 +360,9 @@ def shap_clustering(
     print(f"shap_clustering started at {shap_cluster_start_timestamp}")
 
     perform_shap_clustering(
+        shap_clusters_folder,
+        shap_subclusters_folder,
+        shap_folder,
         task_type,
         dimensionality_reduction_method,
         perform_subclustering,
@@ -251,6 +374,7 @@ def shap_clustering(
     shap_cluster_exec_time = shap_cluster_end_time - shap_cluster_start_time
     print(f"shap_clustering ended at {shap_cluster_end_timestamp}")
     log_execution_time(
+        ROOT,
         "shap_clustering",
         shap_cluster_exec_time,
         shap_cluster_start_timestamp,
@@ -258,14 +382,22 @@ def shap_clustering(
     )
 
 
-def sage_calculation(best_models, task_type, data_usage, datetime_col, threshold):
+def sage_calculation(task_type, data_usage, datetime_col, threshold):
 
     sage_start_time = time.perf_counter()
     sage_start_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     print(f"sage_calculation started at {sage_start_timestamp}")
-
+    best_models = pd.read_csv(best_models_path)
     perform_sage_analysis(
-        best_models, filter_col, task_type, data_usage, datetime_col, threshold
+        sage_folder,
+        datasets_path,
+        models_path,
+        best_models,
+        filter_col,
+        task_type,
+        data_usage,
+        datetime_col,
+        threshold,
     )
 
     sage_end_time = time.perf_counter()
@@ -274,26 +406,157 @@ def sage_calculation(best_models, task_type, data_usage, datetime_col, threshold
     print(f"sage_calculation ended at {sage_end_timestamp}")
 
     log_execution_time(
-        "sage_calculation", sage_exec_time, sage_start_timestamp, sage_end_timestamp
+        ROOT,
+        "sage_calculation",
+        sage_exec_time,
+        sage_start_timestamp,
+        sage_end_timestamp,
+    )
+
+
+def nshap_calculation(task_type, datetime_col):
+    nshap_start_time = time.perf_counter()
+    nshap_start_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    print(f"nshap_calculation started at {nshap_start_timestamp}")
+    best_models = pd.read_csv(best_models_path)
+
+    # model_registry = (
+    #     classification_model_registry
+    #     if task_type == "classification"
+    #     else regression_model_registry
+    # )
+
+    perform_nshap_analysis(
+        nshap_folder,
+        models_path,
+        datasets_path,
+        sage_folder,
+        shap_folder,
+        top_sage_features_models_path,
+        best_models,
+        filter_col,
+        task_type,
+        datetime_col,
+        model_registry,
+    )
+
+    nshap_end_time = time.perf_counter()
+    nshap_end_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    nshap_exec_time = nshap_end_time - nshap_start_time
+    print(f"nshap_calculation ended at {nshap_end_timestamp}")
+    log_execution_time(
+        ROOT,
+        "nshap_calculation",
+        nshap_exec_time,
+        nshap_start_timestamp,
+        nshap_end_timestamp,
+    )
+
+
+def gshap_calculation(task_type, datetime_col):
+    gshap_start_time = time.perf_counter()
+    gshap_start_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    print(f"gshap_calculation started at {gshap_start_timestamp}")
+    best_models = pd.read_csv(best_models_path)
+    # model_registry = (
+    #     classification_model_registry
+    #     if task_type == "classification"
+    #     else regression_model_registry
+    # )
+
+    perform_gshap_analysis(
+        datasets_path,
+        gshap_folder,
+        models_path,
+        best_models,
+        filter_col,
+        task_type,
+        datetime_col,
+        gshap_intergroup_difference_column_name,
+        gshap_intergroup_difference_selected_values,
+        gshap_intergroup_difference_grouping_method,
+        gshap_intergroup_difference_grouping_value,
+        gshap_mediation_independent_vars,
+        gshap_hypothesis_testing_hypothesis_treshold_method,
+        gshap_hypothesis_testing_hypothesis_treshold_value,
+        gshap_hypothesis_testing_sample_treshold_method,
+        gshap_hypothesis_testing_sample_treshold_value,
+        gshap_hypothesis_testing_condition,
+        model_registry,
+    )
+
+    gshap_end_time = time.perf_counter()
+    gshap_end_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    nshap_exec_time = gshap_end_time - gshap_start_time
+    print(f"nshap_calculation ended at {gshap_end_timestamp}")
+    log_execution_time(
+        ROOT,
+        "nshap_calculation",
+        nshap_exec_time,
+        gshap_start_timestamp,
+        gshap_end_timestamp,
+    )
+
+
+def isage_calculation(task_type, datetime_col):
+    isage_start_time = time.perf_counter()
+    isage_start_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    print(f"gshap_calculation started at {isage_start_timestamp}")
+    best_models = pd.read_csv(best_models_path)
+
+    perform_isage_analysis(
+        isage_folder,
+        models_path,
+        datasets_path,
+        best_models,
+        filter_col,
+        task_type,
+        datetime_col,
+    )
+
+    isage_end_time = time.perf_counter()
+    isage_end_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    isage_exec_time = isage_end_time - isage_start_time
+    print(f"isage_calculation ended at {isage_end_timestamp}")
+    log_execution_time(
+        ROOT,
+        "isage_calculation",
+        isage_exec_time,
+        isage_start_timestamp,
+        isage_end_timestamp,
     )
 
 
 def execute_main_tasks():
 
-    create_folders()
-    # train_and_optimize_models(filter_col, datetime_col)
-    # format_best_models(output_path, task_type=task_type)
-    # best_models = pd.read_csv(best_models_path)
-    # format_detailed_metrics(output_path, task_type)
-    # evaluate_best_models(best_models, task_type, data_usage, datetime_col)
-    # shap_calculation(best_models, task_type, data_usage, datetime_col)
-    shap_clustering(
-        task_type,
-        dimensionality_reduction_method,
-        perform_subclustering,
-        subcluster_prob_threshold,
-    )
-    # sage_calculation(best_models, task_type, data_usage, datetime_col, threshold)
+    if "train_and_optimize_models" in tasks_to_execute:
+        train_and_optimize_models(filter_col, datetime_col)
+
+    if "shap_calculation" in tasks_to_execute:
+        shap_calculation(task_type, data_usage, datetime_col)
+
+    if "shap_interaction" in tasks_to_execute:
+        shap_interaction(task_type, data_usage, datetime_col)
+
+    if "shap_clustering" in tasks_to_execute:
+        shap_clustering(
+            task_type,
+            dimensionality_reduction_method,
+            perform_subclustering,
+            subcluster_prob_threshold,
+        )
+
+    if "sage_calculation" in tasks_to_execute:
+        sage_calculation(task_type, data_usage, datetime_col, threshold)
+
+    if "nshap_calculation" in tasks_to_execute:
+        nshap_calculation(task_type, datetime_col)
+
+    if "gshap_calculation" in tasks_to_execute:
+        gshap_calculation(task_type, datetime_col)
+
+    if "isage_calculation" in tasks_to_execute:
+        isage_calculation(task_type, datetime_col)
 
 
 def main():
@@ -311,6 +574,7 @@ def main():
     print(f"Global execution ended at {global_end_timestamp}")
 
     log_execution_time(
+        ROOT,
         "Global execution",
         global_exec_time,
         global_start_timestamp,

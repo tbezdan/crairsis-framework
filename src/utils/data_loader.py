@@ -2,11 +2,11 @@ import os
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
-from utils.config import datasets_path
 from sklearn.preprocessing import LabelEncoder
 
 
 def load_and_preprocess_data(
+    datasets_path,
     df,
     target_column,
     datetime_col,

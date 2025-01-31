@@ -1,17 +1,10 @@
-from utils.config import (
-    shap_folder,
-    interactions_folder,
-    models_path,
-    datasets_path,
-    interactions_feature_folder,
-    actual_predicted_folder,
-)
 import joblib
 import shap
 import pandas as pd
 import numpy as np
 import os
 from utils.logger import setup_logger
+import fasttreeshap
 
 logger = setup_logger(__name__)
 
@@ -19,7 +12,15 @@ logger = setup_logger(__name__)
 
 
 def get_data_model(
-    file, filename, filter_column, filter_value, target, data_usage, datetime_col
+    models_path,
+    datasets_path,
+    file,
+    filename,
+    filter_column,
+    filter_value,
+    target,
+    data_usage,
+    datetime_col,
 ):
     model_path = os.path.join(models_path, file + ".joblib")
     data_path = os.path.join(
@@ -28,6 +29,7 @@ def get_data_model(
     )
 
     X = pd.read_csv(data_path)
+
     model = joblib.load(model_path)
 
     if data_usage == "train_and_test":
@@ -159,6 +161,8 @@ def shap_loc_rel_norm(
         impactsDf = pd.DataFrame(impacts, columns=data.columns)
         impactsDf["id"] = idx
 
+        expected_value = expected_value[0]
+
         abs_sum = impactsDf.drop("id", axis=1).abs().sum(axis=1)
         relative = impactsDf.drop("id", axis=1).div(abs_sum, axis=0).multiply(100)
         normalized = impactsDf.drop("id", axis=1) / expected_value
@@ -167,7 +171,7 @@ def shap_loc_rel_norm(
         normalized["id"] = impactsDf["id"]
 
         impactsDf.to_csv(
-            os.path.join(folder_output, f"{file} _impacts_local.csv"), index=False
+            os.path.join(folder_output, f"{file}_impacts_local.csv"), index=False
         )
         relative.to_csv(
             os.path.join(folder_output, f"{file}_impacts_local_relative.csv"),
@@ -179,12 +183,20 @@ def shap_loc_rel_norm(
         )
 
         pd.DataFrame({"Expected value": [expected_value]}).to_csv(
-            os.path.join(folder_output, f"{file} - Expected value.csv"), index=False
+            os.path.join(folder_output, f"{file}_expected_value.csv"), index=False
         )
 
 
-def perform_shap_analysis(
-    best_models, filter_column, task_type, data_usage, datetime_col
+def perform_shap_interactions_analysis(
+    interactions_folder,
+    models_path,
+    datasets_path,
+    interactions_feature_folder,
+    best_models,
+    filter_column,
+    task_type,
+    data_usage,
+    datetime_col,
 ):
     for i in range(best_models.shape[0]):
         try:
@@ -199,6 +211,8 @@ def perform_shap_analysis(
 
             logger.info(f"Loading data and model for {file}")
             model, data, idx = get_data_model(
+                models_path,
+                datasets_path,
                 file,
                 filename,
                 filter_column,
@@ -210,16 +224,149 @@ def perform_shap_analysis(
 
             logger.info("Initializing SHAP explainer")
 
-            background_sample_size = min(1000, len(data))
-            background_data = data.sample(background_sample_size, random_state=42)
+            if ml_model == "XGBoostModel":
 
-            explainer = shap.TreeExplainer(
-                model, background_data, feature_perturbation="interventional"
+                # background_sample_size = min(1000, len(data))
+                # background_data = data.sample(background_sample_size, random_state=42)
+
+                explainer = shap.TreeExplainer(
+                    model
+                )  # background_data, feature_perturbation="interventional"
+            else:
+                explainer = fasttreeshap.TreeExplainer(
+                    model,
+                    algorithm="v2",
+                    # data=background_data,
+                    # feature_perturbation="interventional",
+                )
+            expected_value = explainer.expected_value
+            logger.info("Calculating SHAP interaction values")
+            interaction_values = explainer.shap_interaction_values(data)
+
+            if task_type == "classification":
+
+                for class_idx, _ in enumerate(interaction_values):
+
+                    if (
+                        isinstance(expected_value, np.ndarray)
+                        and len(expected_value) > 1
+                    ):
+
+                        expected_val = expected_value[class_idx]
+                    elif (
+                        isinstance(expected_value, (list, np.ndarray))
+                        and len(expected_value) == 1
+                    ):
+
+                        expected_val = expected_value[0]
+                    else:
+                        expected_val = expected_value
+
+                    logger.info(
+                        f"Analyzing main effects and interactions for class {class_idx}"
+                    )
+                    if isinstance(interaction_values, list):
+                        interaction_val = interaction_values[class_idx]
+                    else:
+                        interaction_val = interaction_values
+
+                    main_effect(
+                        interactions_feature_folder,
+                        expected_value=expected_val,
+                        interaction_values=interaction_val,
+                        df=data,
+                        idx=idx,
+                        file=file,
+                        folder_output=interactions_folder,
+                        class_label=class_idx,
+                    )
+
+            else:
+                logger.info("Analyzing main effects and interactions - regression")
+                main_effect(
+                    interactions_feature_folder,
+                    expected_value=expected_value,
+                    interaction_values=interaction_values,
+                    df=data,
+                    idx=idx,
+                    file=file,
+                    folder_output=interactions_folder,
+                )
+
+            logger.info(f"Processing model {i+1}/{best_models.shape[0]}: Completed\n")
+        except Exception as e:
+            logger.error(f"Error processing model {i+1}: {e}", exc_info=True)
+
+
+def perform_shap_analysis(
+    shap_folder,
+    interactions_folder,
+    models_path,
+    datasets_path,
+    interactions_feature_folder,
+    best_models,
+    filter_column,
+    task_type,
+    data_usage,
+    datetime_col,
+):
+    for i in range(best_models.shape[0]):
+        try:
+            logger.info(f"Processing model {i+1}/{best_models.shape[0]}: Start")
+            target = best_models.loc[i, "target"]
+            filename = best_models.loc[i, "filename"]
+            filter_value = best_models.loc[i, "filter_value"]
+            ml_model = best_models.loc[i, "ml_model"]
+            mh_algo = best_models.loc[i, "metaheuristic"]
+
+            file = f"filename_{filename}_filter_col_{filter_column}_filter_val_{filter_value}_target_{target}_ml_model_{ml_model}_mh_algo_{mh_algo}"
+
+            logger.info(f"Loading data and model for {file}")
+            model, data, idx = get_data_model(
+                models_path,
+                datasets_path,
+                file,
+                filename,
+                filter_column,
+                filter_value,
+                target,
+                data_usage,
+                datetime_col,
             )
+
+            logger.info("Initializing SHAP explainer")
+
+            # background_sample_size = min(1000, len(data))
+            # background_data = data.sample(background_sample_size, random_state=42)
+
+            # https://github.com/linkedin/FastTreeSHAP/blob/master/fasttreeshap/explainers/_tree.py
+            # Algorithm parameter options:
+            # "v0": Original TreeSHAP algorithm in SHAP package.
+            # "v1": FastTreeSHAP v1 algorithm proposed in FastTreeSHAP paper.
+            # "v2": FastTreeSHAP v2 algorithm proposed in FastTreeSHAP paper.
+            # n_jobs : -1 (default) number of parallel threads (-1 means utilizing all available cores)
+
+            # explainer = shap.TreeExplainer(
+            #     model, background_data, feature_perturbation="interventional"
+            # ) # The interventional setting ensures that feature dependencies are handled using the background dataset. This is more realistic for datasets with correlated features.
+            if ml_model == "XGBoostModel":
+
+                # background_sample_size = min(1000, len(data))
+                # background_data = data.sample(background_sample_size, random_state=42)
+
+                explainer = shap.TreeExplainer(
+                    model
+                )  # background_data, feature_perturbation="interventional"
+            else:
+                explainer = fasttreeshap.TreeExplainer(
+                    model,
+                    algorithm="v2",
+                    # data=background_data,
+                    # feature_perturbation="interventional",
+                )
             expected_value = explainer.expected_value
 
             shap_values = explainer.shap_values(data, check_additivity=False)
-            interaction_values = explainer.shap_interaction_values(data)
 
             if task_type == "classification":
 
@@ -257,23 +404,16 @@ def perform_shap_analysis(
                     logger.info(
                         f"Analyzing main effects and interactions for class {class_idx}"
                     )
-                    if isinstance(interaction_values, list):
-                        interaction_val = interaction_values[class_idx]
-                    else:
-                        interaction_val = interaction_values
 
-                    main_effect(
-                        class_impacts,
-                        expected_value=expected_val,
-                        interaction_values=interaction_val,
-                        df=data,
-                        idx=idx,
-                        file=file,
-                        folder_output=interactions_folder,
-                        class_label=class_idx,
-                    )
+                # merge files for all classes
                 process_all_shap_files(
-                    filename, filter_column, filter_value, target, ml_model, mh_algo
+                    shap_folder,
+                    filename,
+                    filter_column,
+                    filter_value,
+                    target,
+                    ml_model,
+                    mh_algo,
                 )
 
             else:
@@ -288,27 +428,13 @@ def perform_shap_analysis(
                     task_type=task_type,
                 )
 
-                logger.info("Calculating SHAP interaction values")
-                interaction_values = explainer.shap_interaction_values(data)
-
-                logger.info("Analyzing main effects and interactions")
-                main_effect(
-                    shap_values,
-                    expected_value,
-                    interaction_values,
-                    data,
-                    idx,
-                    file,
-                    interactions_folder,
-                )
-
             logger.info(f"Processing model {i+1}/{best_models.shape[0]}: Completed\n")
         except Exception as e:
             logger.error(f"Error processing model {i+1}: {e}", exc_info=True)
 
 
 def main_effect(
-    impacts,
+    interactions_feature_folder,
     expected_value,
     interaction_values,
     df,
@@ -319,7 +445,6 @@ def main_effect(
 ):
     interaction_details = True
 
-    impactsDf = pd.DataFrame(impacts, columns=df.columns)
     suffix = f"_class_{class_label}" if class_label is not None else ""
 
     if interaction_details:
@@ -328,7 +453,7 @@ def main_effect(
 
             interactions = pd.DataFrame(
                 interaction_values[:, :, i],
-                columns=impactsDf.columns.values.tolist(),
+                columns=df.columns.values.tolist(),
             )
 
             interactions["id"] = idx
@@ -345,13 +470,13 @@ def main_effect(
             interactions.to_csv(interaction_file_path, index=False)
 
         main_effects_list = []
-        for e, column in enumerate(impactsDf.columns):
+        for e, column in enumerate(df.columns):
             main_effect_series = pd.Series(interaction_values[:, e, e], name=column)
             main_effects_list.append(main_effect_series)
         main_effects = pd.concat(main_effects_list, axis=1)
         main_effects["id"] = idx
     else:
-        main_effects = pd.DataFrame(interaction_values, columns=impactsDf.columns)
+        main_effects = pd.DataFrame(interaction_values, columns=df.columns)
         main_effects["id"] = idx
 
     tmp = np.abs(interaction_values).sum(0)
@@ -371,7 +496,7 @@ def main_effect(
         os.makedirs(folder_output)
 
     df_interaction_matrix.to_csv(
-        os.path.join(folder_output, f"{file}_interactions_matrix_sum_{suffix}.csv"),
+        os.path.join(folder_output, f"{file}_interactions_matrix_sum{suffix}.csv"),
         index=True,
     )
 
@@ -393,26 +518,33 @@ def main_effect(
     main_effect_relative["id"] = idx
 
     main_effects.to_csv(
-        os.path.join(folder_output, f"{file}_interactions_main_effects_{suffix}.csv"),
+        os.path.join(folder_output, f"{file}_interactions_main_effects{suffix}.csv"),
         index=False,
     )
     main_effect_relative.to_csv(
         os.path.join(
-            folder_output, f"{file}_interactions_main_effects_relative_{suffix}.csv"
+            folder_output, f"{file}_interactions_main_effects_relative{suffix}.csv"
         ),
         index=False,
     )
     normalized_main_effect.to_csv(
         os.path.join(
             folder_output,
-            f"{file}_interactions_normalized_main_effects_{suffix}.csv",
+            f"{file}_interactions_normalized_main_effects{suffix}.csv",
         ),
         index=False,
     )
 
 
 def get_impact_files(
-    filename, filter_col, filter_val, target, ml_model, mh_algo, impact_type
+    shap_folder,
+    filename,
+    filter_col,
+    filter_val,
+    target,
+    ml_model,
+    mh_algo,
+    impact_type,
 ):
 
     pattern = f"filename_{filename}_filter_col_{filter_col}_filter_val_{filter_val}_target_{target}_ml_model_{ml_model}_mh_algo_{mh_algo}_impacts_{impact_type}_class_"
@@ -420,7 +552,7 @@ def get_impact_files(
     return files
 
 
-def merge_impact_files(files):
+def merge_impact_files(files, shap_folder):
 
     data_frames = []
 
@@ -436,11 +568,25 @@ def merge_impact_files(files):
 
 
 def process_shap_files(
-    filename, filter_col, filter_val, target, ml_model, mh_algo, impact_type
+    shap_folder,
+    filename,
+    filter_col,
+    filter_val,
+    target,
+    ml_model,
+    mh_algo,
+    impact_type,
 ):
 
     files = get_impact_files(
-        filename, filter_col, filter_val, target, ml_model, mh_algo, impact_type
+        shap_folder,
+        filename,
+        filter_col,
+        filter_val,
+        target,
+        ml_model,
+        mh_algo,
+        impact_type,
     )
 
     if not files:
@@ -449,26 +595,36 @@ def process_shap_files(
         )
         return None
 
-    merged_filtered_df = merge_impact_files(files)
+    merged_filtered_df = merge_impact_files(files, shap_folder)
 
     output_filename = f"filename_{filename}_filter_col_{filter_col}_filter_val_{filter_val}_target_{target}_ml_model_{ml_model}_mh_algo_{mh_algo}_impacts_{impact_type}.csv"
     output_path = os.path.join(shap_folder, output_filename)
 
     merged_filtered_df.to_csv(output_path, index=False)
-    print(f"Saved merged and filtered SHAP impacts ({impact_type}) to: {output_path}")
+    print(f"Saved merged and filtered SHAP impacts ({impact_type})")
 
     return merged_filtered_df
 
 
-def process_all_shap_files(filename, filter_col, filter_val, target, ml_model, mh_algo):
+def process_all_shap_files(
+    shap_folder, filename, filter_col, filter_val, target, ml_model, mh_algo
+):
 
     print("Processing local SHAP impacts...")
     process_shap_files(
-        filename, filter_col, filter_val, target, ml_model, mh_algo, impact_type="local"
+        shap_folder,
+        filename,
+        filter_col,
+        filter_val,
+        target,
+        ml_model,
+        mh_algo,
+        impact_type="local",
     )
 
     print("Processing relative SHAP impacts...")
     process_shap_files(
+        shap_folder,
         filename,
         filter_col,
         filter_val,
@@ -480,6 +636,7 @@ def process_all_shap_files(filename, filter_col, filter_val, target, ml_model, m
 
     print("Processing normalized SHAP impacts...")
     process_shap_files(
+        shap_folder,
         filename,
         filter_col,
         filter_val,

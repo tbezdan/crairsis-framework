@@ -1,5 +1,5 @@
 from mealpy import Problem
-from utils.config import algorithm_settings
+from utils.hyperparameter_config import algorithm_settings
 from sklearn.metrics import mean_squared_error, accuracy_score
 from sklearn.model_selection import cross_val_score, KFold
 from sklearn.model_selection import StratifiedKFold

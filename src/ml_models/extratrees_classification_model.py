@@ -30,6 +30,7 @@ class ExtraTreesClassificationModel(BaseModel):
         return self.model.score(X_test, y_test)
 
     def predict_proba(self, X):
+
         return self.model.predict_proba(X)
 
     def get_sklearn_estimator(self, random_seed=42, **kwargs):

@@ -1,4 +1,3 @@
-from utils.config import shap_clusters_folder, shap_subclusters_folder, shap_folder
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -18,6 +17,7 @@ logger = setup_logger(__name__)
 
 
 def post_segmentation(
+    shap_subclusters_folder,
     df,
     folder_output,
     file_name,
@@ -405,6 +405,7 @@ def post_segmentation(
 
     if enable_subclustering:
         perform_subclustering(
+            shap_subclusters_folder,
             data=data,
             probabilities=probabilities,
             clusters=cluster_labels,
@@ -424,6 +425,9 @@ def post_segmentation(
 
 
 def perform_shap_clustering(
+    shap_clusters_folder,
+    shap_subclusters_folder,
+    shap_folder,
     task_type,
     dimensionality_reduction_method,
     enable_subclustering,
@@ -464,6 +468,7 @@ def perform_shap_clustering(
             if task_type == "classification" and class_label is not None:
                 logger.info(f"Performing clustering for class: {class_label}")
                 post_segmentation(
+                    shap_subclusters_folder,
                     df=df,
                     folder_output=folder_output,
                     file_name=file_name,
@@ -477,6 +482,7 @@ def perform_shap_clustering(
             else:
                 logger.info("Performing clustering for general data.")
                 post_segmentation(
+                    shap_subclusters_folder,
                     df=df,
                     folder_output=folder_output,
                     file_name=file_name,
@@ -495,6 +501,7 @@ def perform_shap_clustering(
 
 
 def perform_subclustering(
+    shap_subclusters_folder,
     data,
     probabilities,
     clusters,

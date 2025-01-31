@@ -14,16 +14,18 @@ from sklearn.metrics import classification_report, confusion_matrix
 
 from optimization.optimizer import optimize
 from utils.logger import setup_logger
-from utils.config import algorithm_settings
+from utils.hyperparameter_config import algorithm_settings
 import datetime
 import numpy as np
 
 
 from sklearn.model_selection import cross_val_predict, StratifiedKFold, KFold
-from utils.config import models_path, output_path, json_path, original_data_id_folder
 from sklearn.model_selection import KFold
 from sklearn.preprocessing import LabelEncoder
 import json
+import warnings
+
+warnings.simplefilter("ignore")
 
 logger = setup_logger(__name__)
 random_seed = 42
@@ -146,6 +148,8 @@ def evaluate_ml_models(
 
 
 def optimize_and_evaluate_model(
+    models_path,
+    datasets_path,
     datetime_col,
     filtered_data,
     X,
@@ -258,6 +262,7 @@ def optimize_and_evaluate_model(
                 )
 
             optimized_results = train_evaluate_save_model(
+                datasets_path,
                 datetime_col,
                 filtered_data=filtered_data,
                 model_name=model_name,
@@ -283,6 +288,7 @@ def optimize_and_evaluate_model(
 
 
 def train_evaluate_save_model(
+    datasets_path,
     datetime_col,
     filtered_data,
     model_name,
@@ -298,6 +304,7 @@ def train_evaluate_save_model(
     model_registry,
 ):
     X_train, X_test, y_train, y_test = load_and_preprocess_data(
+        datasets_path,
         filtered_data,
         target,
         datetime_col,
@@ -421,6 +428,11 @@ def clean_filename(filename):
 
 
 def perform_training_and_optimization(
+    models_path,
+    output_path,
+    json_path,
+    original_data_id_folder,
+    original_datasets_path,
     datasets_path,
     num_epochs,
     population_size,
@@ -436,12 +448,12 @@ def perform_training_and_optimization(
     optimized_results_cv = []
     combined_optimization_history = pd.DataFrame()
 
-    for file in os.listdir(datasets_path):
+    for file in os.listdir(original_datasets_path):
 
         if not file.endswith(".csv") or file == ".DS_Store":
             continue
 
-        file_path = os.path.join(datasets_path, file)
+        file_path = os.path.join(original_datasets_path, file)
 
         filename = clean_filename(file)
         logger.info(f"File: {filename}")
@@ -468,6 +480,7 @@ def perform_training_and_optimization(
                     )
 
                     preprocessed_data = load_and_preprocess_data(
+                        datasets_path,
                         filtered_data,
                         target,
                         datetime_col,
@@ -501,6 +514,8 @@ def perform_training_and_optimization(
                             optimized_results_cv,
                             combined_optimization_history,
                         ) = optimize_and_evaluate_model(
+                            models_path,
+                            datasets_path,
                             datetime_col,
                             filtered_data,
                             X=X,
@@ -534,6 +549,7 @@ def perform_training_and_optimization(
                 logger.info(f"-------Target: {target}-------")
 
                 preprocessed_data = load_and_preprocess_data(
+                    datasets_path,
                     filtered_data,
                     target,
                     datetime_col,
@@ -565,6 +581,8 @@ def perform_training_and_optimization(
                         optimized_results_cv,
                         combined_optimization_history,
                     ) = optimize_and_evaluate_model(
+                        models_path,
+                        datasets_path,
                         datetime_col,
                         filtered_data,
                         X=X,

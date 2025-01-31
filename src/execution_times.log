@@ -1,0 +1,538 @@
+
+Execution Setup Information
+------------------------------------------------------
+Date and Time:                    2025-01-26 03:52:40
+User Name:                        DefaultUserName
+Task Type:                        regression
+Data Usage:                       test
+Number of Epochs:                 2
+Population Size:                  5
+SAGE Threshold:                   90
+Datetime Column:                  None
+Filter Column:                    None
+Dimensionality Reduction Method:  PaCMAP
+Subclustering:                    False
+Subcluster Probability Threshold: 0.6
+
+Targets:
+    - target
+
+Metaheuristic Algorithms:
+    - SCA
+
+ML Models:
+    - AdaBoostModel
+    - LGBMModel
+    - XGBoostModel
+    - ExtraTreesModel
+    - GradientBoostingModel
+    - HistGradientBoostingModel
+
+
+Execution Setup Information
+------------------------------------------------------
+Date and Time:                    2025-01-26 03:53:45
+User Name:                        DefaultUserName
+Task Type:                        regression
+Data Usage:                       test
+Number of Epochs:                 2
+Population Size:                  5
+SAGE Threshold:                   90
+Datetime Column:                  None
+Filter Column:                    None
+Dimensionality Reduction Method:  PaCMAP
+Subclustering:                    False
+Subcluster Probability Threshold: 0.6
+
+Targets:
+    - target
+
+Metaheuristic Algorithms:
+    - SCA
+
+ML Models:
+    - AdaBoostModel
+    - LGBMModel
+    - XGBoostModel
+    - ExtraTreesModel
+    - GradientBoostingModel
+    - HistGradientBoostingModel
+
+
+Execution Setup Information
+------------------------------------------------------
+Date and Time:                    2025-01-26 04:21:59
+User Name:                        DefaultUserName
+Task Type:                        regression
+Data Usage:                       test
+Number of Epochs:                 2
+Population Size:                  5
+SAGE Threshold:                   90
+Datetime Column:                  None
+Filter Column:                    None
+Dimensionality Reduction Method:  PaCMAP
+Subclustering:                    False
+Subcluster Probability Threshold: 0.6
+
+Targets:
+    - target
+
+Metaheuristic Algorithms:
+    - SCA
+
+ML Models:
+    - AdaBoostModel
+    - LGBMModel
+    - XGBoostModel
+    - ExtraTreesModel
+    - GradientBoostingModel
+    - HistGradientBoostingModel
+
+
+Execution Setup Information
+------------------------------------------------------
+Date and Time:                    2025-01-26 04:24:02
+User Name:                        DefaultUserName
+Task Type:                        regression
+Data Usage:                       test
+Number of Epochs:                 2
+Population Size:                  5
+SAGE Threshold:                   90
+Datetime Column:                  None
+Filter Column:                    None
+Dimensionality Reduction Method:  PaCMAP
+Subclustering:                    False
+Subcluster Probability Threshold: 0.6
+
+Targets:
+    - target
+
+Metaheuristic Algorithms:
+    - SCA
+
+ML Models:
+    - AdaBoostModel
+    - LGBMModel
+    - XGBoostModel
+    - ExtraTreesModel
+    - GradientBoostingModel
+    - HistGradientBoostingModel
+
+evaluate_best_models started at 2025-01-26 04:58:53 and ended at 2025-01-26 04:58:53, executed in 0d 0h 0m 0.1249s (0.1249 seconds)
+train_and_optimize_models started at 2025-01-26 03:53:45 and ended at 2025-01-26 04:58:53, executed in 0d 1h 5m 7.3327s (3907.3327 seconds)
+shap_calculation started at 2025-01-26 04:58:53 and ended at 2025-01-26 04:59:05, executed in 0d 0h 0m 12.7087s (12.7087 seconds)
+evaluate_best_models started at 2025-01-26 05:00:07 and ended at 2025-01-26 05:00:07, executed in 0d 0h 0m 0.1619s (0.1619 seconds)
+train_and_optimize_models started at 2025-01-26 04:24:02 and ended at 2025-01-26 05:00:07, executed in 0d 0h 36m 4.2531s (2164.2531 seconds)
+evaluate_best_models started at 2025-01-26 05:00:15 and ended at 2025-01-26 05:00:15, executed in 0d 0h 0m 0.1744s (0.1744 seconds)
+train_and_optimize_models started at 2025-01-26 04:21:59 and ended at 2025-01-26 05:00:15, executed in 0d 0h 38m 15.3437s (2295.3437 seconds)
+shap_calculation started at 2025-01-26 05:00:07 and ended at 2025-01-26 05:00:19, executed in 0d 0h 0m 11.9876s (11.9876 seconds)
+shap_interactions started at 2025-01-26 04:59:05 and ended at 2025-01-26 05:00:21, executed in 0d 0h 1m 15.6257s (75.6257 seconds)
+shap_calculation started at 2025-01-26 05:00:15 and ended at 2025-01-26 05:00:23, executed in 0d 0h 0m 7.6925s (7.6925 seconds)
+shap_clustering started at 2025-01-26 05:00:21 and ended at 2025-01-26 05:00:23, executed in 0d 0h 0m 2.0080s (2.0080 seconds)
+shap_interactions started at 2025-01-26 05:00:19 and ended at 2025-01-26 05:00:56, executed in 0d 0h 0m 37.4362s (37.4362 seconds)
+shap_clustering started at 2025-01-26 05:00:56 and ended at 2025-01-26 05:00:58, executed in 0d 0h 0m 1.5584s (1.5584 seconds)
+shap_interactions started at 2025-01-26 05:00:23 and ended at 2025-01-26 05:00:59, executed in 0d 0h 0m 36.8434s (36.8434 seconds)
+shap_clustering started at 2025-01-26 05:00:59 and ended at 2025-01-26 05:01:01, executed in 0d 0h 0m 1.2858s (1.2858 seconds)
+
+Execution Setup Information
+------------------------------------------------------
+Date and Time:                    2025-01-30 11:13:09
+User Name:                        DefaultUserName
+Task Type:                        classification
+Data Usage:                       test
+Number of Epochs:                 None
+Population Size:                  None
+SAGE Threshold:                   90
+Datetime Column:                  None
+Filter Column:                    None
+Dimensionality Reduction Method:  PaCMAP
+Subclustering:                    False
+Subcluster Probability Threshold: 0.6
+
+Targets:
+
+Metaheuristic Algorithms:
+
+ML Models:
+    - BalancedRandomForestCls
+    - LGBMModel
+    - ExtraTreesModel
+    - HistGradientBoostingCls
+
+
+Execution Setup Information
+------------------------------------------------------
+Date and Time:                    2025-01-30 12:36:21
+User Name:                        DefaultUserName
+Task Type:                        regression
+Data Usage:                       test
+Number of Epochs:                 5
+Population Size:                  5
+SAGE Threshold:                   90
+Datetime Column:                  Datetime
+Filter Column:                    ['CRAI']
+Dimensionality Reduction Method:  PaCMAP
+Subclustering:                    False
+Subcluster Probability Threshold: 0.6
+
+Targets:
+    - PM2_5_Aerosol_PM2_5_6001
+
+Metaheuristic Algorithms:
+    - SCA
+    - HHO
+
+ML Models:
+    - AdaBoostModel
+    - LGBMModel
+    - XGBoostModel
+    - ExtraTreesModel
+    - GradientBoostingModel
+    - HistGradientBoostingModel
+
+
+Execution Setup Information
+------------------------------------------------------
+Date and Time:                    2025-01-30 21:17:13
+User Name:                        DefaultUserName
+Task Type:                        classification
+Data Usage:                       test
+Number of Epochs:                 5
+Population Size:                  5
+SAGE Threshold:                   90
+Datetime Column:                  Datetime
+Filter Column:                    None
+Dimensionality Reduction Method:  PaCMAP
+Subclustering:                    True
+Subcluster Probability Threshold: 0.6
+
+Targets:
+    - PM2_5_Aerosol_PM2_5_6001
+
+Metaheuristic Algorithms:
+    - SCA
+
+ML Models:
+    - BalancedRandomForestCls
+    - LGBMModel
+    - ExtraTreesModel
+    - HistGradientBoostingCls
+
+
+Execution Setup Information
+------------------------------------------------------
+Date and Time:                    2025-01-30 21:32:48
+User Name:                        DefaultUserName
+Task Type:                        regression
+Data Usage:                       test
+Number of Epochs:                 5
+Population Size:                  5
+SAGE Threshold:                   90
+Datetime Column:                  None
+Filter Column:                    None
+Dimensionality Reduction Method:  PaCMAP
+Subclustering:                    True
+Subcluster Probability Threshold: 0.6
+
+Targets:
+    - target
+
+Metaheuristic Algorithms:
+    - SCA
+
+ML Models:
+    - LGBMModel
+    - XGBoostModel
+    - ExtraTreesModel
+
+
+Execution Setup Information
+------------------------------------------------------
+Date and Time:                    2025-01-30 21:39:21
+User Name:                        DefaultUserName
+Task Type:                        regression
+Data Usage:                       test
+Number of Epochs:                 5
+Population Size:                  5
+SAGE Threshold:                   90
+Datetime Column:                  None
+Filter Column:                    None
+Dimensionality Reduction Method:  PaCMAP
+Subclustering:                    True
+Subcluster Probability Threshold: 0.6
+
+Targets:
+
+Metaheuristic Algorithms:
+    - SCA
+
+ML Models:
+    - LGBMModel
+    - XGBoostModel
+    - ExtraTreesModel
+
+
+Execution Setup Information
+------------------------------------------------------
+Date and Time:                    2025-01-30 21:40:52
+User Name:                        DefaultUserName
+Task Type:                        classification
+Data Usage:                       test
+Number of Epochs:                 None
+Population Size:                  None
+SAGE Threshold:                   90
+Datetime Column:                  None
+Filter Column:                    None
+Dimensionality Reduction Method:  PaCMAP
+Subclustering:                    False
+Subcluster Probability Threshold: 0.6
+
+Targets:
+    - target
+
+Metaheuristic Algorithms:
+    - SCA
+
+ML Models:
+    - BalancedRandomForestCls
+    - LGBMModel
+    - ExtraTreesModel
+    - HistGradientBoostingCls
+
+
+Execution Setup Information
+------------------------------------------------------
+Date and Time:                    2025-01-30 21:53:53
+User Name:                        DefaultUserName
+Task Type:                        classification
+Data Usage:                       test
+Number of Epochs:                 None
+Population Size:                  None
+SAGE Threshold:                   90
+Datetime Column:                  None
+Filter Column:                    None
+Dimensionality Reduction Method:  PaCMAP
+Subclustering:                    False
+Subcluster Probability Threshold: 0.6
+
+Targets:
+    - HouseAge
+
+Metaheuristic Algorithms:
+
+ML Models:
+    - BalancedRandomForestCls
+    - LGBMModel
+    - ExtraTreesModel
+    - HistGradientBoostingCls
+
+
+Execution Setup Information
+------------------------------------------------------
+Date and Time:                    2025-01-30 21:54:52
+User Name:                        DefaultUserName
+Task Type:                        regression
+Data Usage:                       test
+Number of Epochs:                 5
+Population Size:                  5
+SAGE Threshold:                   90
+Datetime Column:                  None
+Filter Column:                    None
+Dimensionality Reduction Method:  PaCMAP
+Subclustering:                    False
+Subcluster Probability Threshold: 0.6
+
+Targets:
+    - target
+
+Metaheuristic Algorithms:
+    - SCA
+
+ML Models:
+    - AdaBoostModel
+    - LGBMModel
+    - XGBoostModel
+    - ExtraTreesModel
+    - GradientBoostingModel
+    - HistGradientBoostingModel
+
+evaluate_best_models started at 2025-01-30 21:55:23 and ended at 2025-01-30 21:55:23, executed in 0d 0h 0m 0.1755s (0.1755 seconds)
+train_and_optimize_models started at 2025-01-30 21:32:48 and ended at 2025-01-30 21:55:23, executed in 0d 0h 22m 34.4362s (1354.4362 seconds)
+shap_calculation started at 2025-01-30 21:55:23 and ended at 2025-01-30 21:55:41, executed in 0d 0h 0m 18.4129s (18.4129 seconds)
+shap_interactions started at 2025-01-30 21:55:41 and ended at 2025-01-30 21:57:31, executed in 0d 0h 1m 49.3521s (109.3521 seconds)
+shap_clustering started at 2025-01-30 21:57:31 and ended at 2025-01-30 21:57:34, executed in 0d 0h 0m 3.8920s (3.8920 seconds)
+
+Execution Setup Information
+------------------------------------------------------
+Date and Time:                    2025-01-30 21:59:36
+User Name:                        DefaultUserName
+Task Type:                        classification
+Data Usage:                       test
+Number of Epochs:                 2
+Population Size:                  5
+SAGE Threshold:                   90
+Datetime Column:                  Datetime
+Filter Column:                    None
+Dimensionality Reduction Method:  PaCMAP
+Subclustering:                    False
+Subcluster Probability Threshold: 0.6
+
+Targets:
+    - daylight_rain
+
+Metaheuristic Algorithms:
+    - SCA
+    - HHO
+
+ML Models:
+    - BalancedRandomForestCls
+    - LGBMModel
+    - ExtraTreesModel
+    - HistGradientBoostingCls
+
+evaluate_best_models started at 2025-01-30 22:35:39 and ended at 2025-01-30 22:35:39, executed in 0d 0h 0m 0.1507s (0.1507 seconds)
+train_and_optimize_models started at 2025-01-30 21:54:52 and ended at 2025-01-30 22:35:39, executed in 0d 0h 40m 47.1634s (2447.1634 seconds)
+shap_calculation started at 2025-01-30 22:35:39 and ended at 2025-01-30 22:35:56, executed in 0d 0h 0m 16.3225s (16.3225 seconds)
+shap_interactions started at 2025-01-30 22:35:56 and ended at 2025-01-30 22:37:42, executed in 0d 0h 1m 46.8973s (106.8973 seconds)
+shap_clustering started at 2025-01-30 22:37:42 and ended at 2025-01-30 22:37:45, executed in 0d 0h 0m 2.4188s (2.4188 seconds)
+sage_calculation started at 2025-01-30 22:37:45 and ended at 2025-01-30 22:44:31, executed in 0d 0h 6m 45.8443s (405.8443 seconds)
+nshap_calculation started at 2025-01-30 22:44:31 and ended at 2025-01-30 23:54:32, executed in 0d 1h 10m 1.6395s (4201.6395 seconds)
+evaluate_best_models started at 2025-01-31 01:45:53 and ended at 2025-01-31 01:45:53, executed in 0d 0h 0m 0.2555s (0.2555 seconds)
+train_and_optimize_models started at 2025-01-30 21:59:36 and ended at 2025-01-31 01:45:53, executed in 0d 3h 46m 17.0930s (13577.0930 seconds)
+shap_calculation started at 2025-01-31 01:45:53 and ended at 2025-01-31 01:46:00, executed in 0d 0h 0m 7.5389s (7.5389 seconds)
+shap_interactions started at 2025-01-31 01:46:00 and ended at 2025-01-31 01:47:53, executed in 0d 0h 1m 52.9671s (112.9671 seconds)
+shap_clustering started at 2025-01-31 01:47:53 and ended at 2025-01-31 01:48:03, executed in 0d 0h 0m 9.4119s (9.4119 seconds)
+sage_calculation started at 2025-01-31 01:48:03 and ended at 2025-01-31 02:27:02, executed in 0d 0h 38m 58.6726s (2338.6726 seconds)
+nshap_calculation started at 2025-01-31 02:27:02 and ended at 2025-01-31 04:19:13, executed in 0d 1h 52m 11.0276s (6731.0276 seconds)
+
+Execution Setup Information
+------------------------------------------------------
+Date and Time:                    2025-01-31 10:30:24
+User Name:                        DefaultUserName
+Task Type:                        regression
+Data Usage:                       test
+Number of Epochs:                 2
+Population Size:                  5
+SAGE Threshold:                   90
+Datetime Column:                  None
+Filter Column:                    None
+Dimensionality Reduction Method:  PaCMAP
+Subclustering:                    True
+Subcluster Probability Threshold: 0.6
+
+Targets:
+    - target
+
+Metaheuristic Algorithms:
+    - SCA
+
+ML Models:
+    - AdaBoostModel
+    - LGBMModel
+    - XGBoostModel
+    - ExtraTreesModel
+    - GradientBoostingModel
+    - HistGradientBoostingModel
+
+
+Execution Setup Information
+------------------------------------------------------
+Date and Time:                    2025-01-31 10:51:21
+User Name:                        DefaultUserName
+Task Type:                        regression
+Data Usage:                       test
+Number of Epochs:                 2
+Population Size:                  5
+SAGE Threshold:                   90
+Datetime Column:                  None
+Filter Column:                    None
+Dimensionality Reduction Method:  PaCMAP
+Subclustering:                    True
+Subcluster Probability Threshold: 0.6
+
+Targets:
+    - target
+
+Metaheuristic Algorithms:
+    - SCA
+
+ML Models:
+    - AdaBoostModel
+    - LGBMModel
+    - XGBoostModel
+    - ExtraTreesModel
+    - GradientBoostingModel
+    - HistGradientBoostingModel
+
+evaluate_best_models started at 2025-01-31 10:59:24 and ended at 2025-01-31 10:59:24, executed in 0d 0h 0m 0.1604s (0.1604 seconds)
+train_and_optimize_models started at 2025-01-31 10:51:21 and ended at 2025-01-31 10:59:24, executed in 0d 0h 8m 3.0440s (483.0440 seconds)
+shap_calculation started at 2025-01-31 10:59:24 and ended at 2025-01-31 10:59:35, executed in 0d 0h 0m 10.7325s (10.7325 seconds)
+shap_interactions started at 2025-01-31 10:59:35 and ended at 2025-01-31 11:00:42, executed in 0d 0h 1m 7.0303s (67.0303 seconds)
+shap_clustering started at 2025-01-31 11:00:42 and ended at 2025-01-31 11:00:44, executed in 0d 0h 0m 1.9848s (1.9848 seconds)
+sage_calculation started at 2025-01-31 11:00:44 and ended at 2025-01-31 11:10:33, executed in 0d 0h 9m 49.2177s (589.2177 seconds)
+
+Execution Setup Information
+------------------------------------------------------
+Date and Time:                    2025-01-31 11:30:50
+User Name:                        DefaultUserName
+Task Type:                        regression
+Data Usage:                       test
+Number of Epochs:                 2
+Population Size:                  5
+SAGE Threshold:                   90
+Datetime Column:                  None
+Filter Column:                    None
+Dimensionality Reduction Method:  PaCMAP
+Subclustering:                    True
+Subcluster Probability Threshold: 0.6
+
+Targets:
+    - target
+
+Metaheuristic Algorithms:
+    - SCA
+
+ML Models:
+    - AdaBoostModel
+    - LGBMModel
+    - XGBoostModel
+    - ExtraTreesModel
+    - GradientBoostingModel
+    - HistGradientBoostingModel
+
+
+Execution Setup Information
+------------------------------------------------------
+Date and Time:                    2025-01-31 11:36:24
+User Name:                        DefaultUserName
+Task Type:                        regression
+Data Usage:                       test
+Number of Epochs:                 2
+Population Size:                  5
+SAGE Threshold:                   90
+Datetime Column:                  None
+Filter Column:                    None
+Dimensionality Reduction Method:  PaCMAP
+Subclustering:                    True
+Subcluster Probability Threshold: 0.6
+
+Targets:
+    - target
+
+Metaheuristic Algorithms:
+    - SCA
+
+ML Models:
+    - AdaBoostModel
+    - LGBMModel
+    - XGBoostModel
+    - ExtraTreesModel
+    - GradientBoostingModel
+    - HistGradientBoostingModel
+
+evaluate_best_models started at 2025-01-31 11:43:48 and ended at 2025-01-31 11:43:48, executed in 0d 0h 0m 0.1483s (0.1483 seconds)
+train_and_optimize_models started at 2025-01-31 11:36:24 and ended at 2025-01-31 11:43:48, executed in 0d 0h 7m 23.6971s (443.6971 seconds)
+shap_calculation started at 2025-01-31 11:43:48 and ended at 2025-01-31 11:43:55, executed in 0d 0h 0m 7.1377s (7.1377 seconds)
+shap_interactions started at 2025-01-31 11:43:55 and ended at 2025-01-31 11:44:36, executed in 0d 0h 0m 41.2912s (41.2912 seconds)
+shap_clustering started at 2025-01-31 11:44:36 and ended at 2025-01-31 11:44:38, executed in 0d 0h 0m 1.4903s (1.4903 seconds)
+sage_calculation started at 2025-01-31 11:44:38 and ended at 2025-01-31 11:56:40, executed in 0d 0h 12m 2.1806s (722.1806 seconds)

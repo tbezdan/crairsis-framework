@@ -10,13 +10,20 @@ from sklearn.metrics import (
 )
 from utils.logger import setup_logger
 import os
-from utils.config import models_path, datasets_path, actual_predicted_folder
+
 
 logger = setup_logger(__name__)
 
 
 def perform_best_models_evaluation(
-    best_models, filter_column, task_type, data_usage, datetime_col
+    best_models,
+    filter_column,
+    task_type,
+    data_usage,
+    datetime_col,
+    models_path,
+    datasets_path,
+    actual_predicted_folder,
 ):
     for i in range(best_models.shape[0]):
         target = best_models.loc[i, "target"]

@@ -1,10 +1,11 @@
-from utils.config import sage_folder, datasets_path, models_path
 import pandas as pd
 import numpy as np
 import joblib
 import sage
 import os
+import warnings
 
+warnings.simplefilter("ignore")
 
 from utils.logger import setup_logger
 
@@ -12,7 +13,15 @@ logger = setup_logger(__name__)
 
 
 def process_data(
-    target, file, filename, filter_column, filter_value, data_usage, datetime_col
+    datasets_path,
+    models_path,
+    target,
+    file,
+    filename,
+    filter_column,
+    filter_value,
+    data_usage,
+    datetime_col,
 ):
     model_path = os.path.join(models_path, file + ".joblib")
     data_path = os.path.join(
@@ -55,7 +64,7 @@ def process_data(
 
 
 def calculate_and_save_sage(
-    model, x, y, feature_names, file_name, task_type, threshold
+    sage_folder, model, x, y, feature_names, file_name, task_type, threshold
 ):
 
     x = x.values
@@ -108,7 +117,15 @@ def calculate_and_save_sage(
 
 
 def perform_sage_analysis(
-    best_models, filter_column, task_type, data_usage, datetime_col, threshold
+    sage_folder,
+    datasets_path,
+    models_path,
+    best_models,
+    filter_column,
+    task_type,
+    data_usage,
+    datetime_col,
+    threshold,
 ):
     logger.info("Starting SAGE analysis...")
 
@@ -125,6 +142,8 @@ def perform_sage_analysis(
 
         file = f"filename_{filename}_filter_col_{filter_column}_filter_val_{filter_value}_target_{target}_ml_model_{ml_model}_mh_algo_{mh_algo}"
         model, x, y, feature_names = process_data(
+            datasets_path,
+            models_path,
             target,
             file,
             filename,
@@ -134,5 +153,7 @@ def perform_sage_analysis(
             datetime_col,
         )
 
-        calculate_and_save_sage(model, x, y, feature_names, file, task_type, threshold)
+        calculate_and_save_sage(
+            sage_folder, model, x, y, feature_names, file, task_type, threshold
+        )
         logger.info("SAGE analysis completed.")

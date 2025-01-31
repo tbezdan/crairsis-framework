@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <title>CSV Upload</title>
+    <style>
+        #additionalSection {
+            visibility: hidden;
+            /* Hide section initially */
+        }
+
+        select {
+            width: 20em;
+        }
+    </style>
+    <script src="multiselect-dropdown.js"></script>
+</head>
+
+<body class="bg-light text-dark" style="color: #333333;">
+
+
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-8 col-lg-6 mx-auto">
+                <form id="uploadForm" class="p-4 border rounded shadow bg-white text-center">
+
+                    <!-- Centered Logo -->
+                    <img src="crairsis_logo.png" alt="crAIRsis Logo" class="d-block mx-auto mb-4"
+                        style="max-width: 150px;">
+
+                    <!-- Project Name -->
+                    <div class="mb-3 text-start">
+                        <label for="project_name" class="form-label fw-bold">Project name</label>
+                        <input id="project_name" type="text" class="form-control" placeholder="Enter project name">
+                    </div>
+
+                    <!-- Upload CSV -->
+                    <div class="mb-3 text-start">
+                        <label for="csvFile" class="form-label fw-bold">Upload CSV file</label>
+                        <input type="file" id="csvFile" name="file" accept=".csv" class="form-control">
+                    </div>
+
+                    <!-- User Name -->
+                    <div class="mb-3 text-start">
+                        <label for="user_name" class="form-label fw-bold">User name</label>
+                        <input type="text" id="user_name" name="user_name" value="DefaultUserName" class="form-control">
+                    </div>
+
+                    <!-- Upload Button -->
+                    <button type="submit" class="btn btn-warning w-100">Upload</button>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-8 col-lg-6 mx-auto">
+                <h4 class="mt-4 text-center">Response</h4>
+                <pre id="response" class="p-3 bg-secondary text-white rounded border fs-6 text-start"
+                    style="min-height: 100px; overflow-x: auto;">No response yet...</pre>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Additional Section for Checkboxes and Select Elements -->
+
+    <div id="additionalSection" class="container mt-4">
+        <div class="row">
+            <div class="col-md-8 col-lg-6 mx-auto">
+                <div class="p-4 border rounded shadow bg-white">
+
+
+                    <form id="columnForm">
+                        <h4 class="text-center mb-4">Configuration settings</h4>
+
+
+                        <div id="checkboxContainer" class="mb-3">
+                            <label for="columns_sel" class="form-label fw-bold">Target column(s)</label>
+                            <select id="columns_sel" name="columns_sel[]" multiple multiselect-search="true"
+                                multiselect-select-all="true" class="form-select"></select>
+                        </div>
+
+                        <div id="datetimeContainer" class="mb-3">
+                            <label for="date_time_col_sel" class="form-label fw-bold">Datetime column</label>
+                            <select id="date_time_col_sel" name="date_time_col_sel[]" multiple multiselect-search="true"
+                                multiselect-select-all="true" class="form-select"></select>
+                        </div>
+
+
+                        <div id="filterColContainer" class="mb-3">
+                            <label for="filter_col_sel" class="form-label fw-bold">Filter column</label>
+                            <select id="filter_col_sel" name="filter_col_sel[]" multiple multiselect-search="true"
+                                multiselect-select-all="true" class="form-select"></select>
+                        </div>
+
+
+
+                        <div class="mb-3">
+                            <label for="metaheuristics_sel" class="form-label fw-bold">Metaheuristic algorithms</label>
+                            <select id="metaheuristics_sel" name="metaheuristics_sel[]" multiple
+                                multiselect-search="true" multiselect-select-all="true" class="form-select">
+                                <option value="SCA">SCA</option>
+                                <option value="HHO">HHO</option>
+                                <option value="FFA">FFA</option>
+                                <option value="SMA">SMA</option>
+                            </select>
+                        </div>
+
+
+                        <div class="mb-3">
+                            <label for="num_epochs" class="form-label fw-bold">Number of epochs</label>
+                            <input type="number" id="num_epochs" name="num_epochs" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="population_size" class="form-label fw-bold">Population size</label>
+                            <input type="number" id="population_size" name="population_size" class="form-control">
+
+                        </div>
+
+
+                        <div class="mb-3">
+                            <label for="ml_type_sel" class="form-label fw-bold">Task type</label>
+                            <select id="ml_type_sel" class="form-select">
+                                <option selected value="classification">classification</option>
+                                <option value="regression">regression</option>
+                            </select>
+                        </div>
+
+
+                        <div id="ml_models" class="mb-3">
+                            <label for="ml_models_sel" class="form-label fw-bold">Machine learning models</label>
+                            <select id="ml_models_sel" name="ml_models_sel[]" multiple multiselect-search="true"
+                                multiselect-select-all="true" class="form-select"></select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="data_usage_sel" class="form-label fw-bold">Data usage</label>
+                            <select id="data_usage_sel" name="data_usage_sel" class="form-select">
+                                <option selected value="test">Test</option>
+                                <option value="train_and_test">Train and test</option>
+                            </select>
+                        </div>
+
+
+
+                        <div id="func_exec" class="mb-3">
+                            <label for="func_exec_sel" class="form-label fw-bold">Function execution</label><br>
+                            <select id="func_exec_sel" name="func_exec_sel[]" multiple multiselect-search="true"
+                                multiselect-select-all="true" class="form-select">
+                                <option selected value="train_and_optimize_models">Train and optimize models</option>
+                                <option selected value="shap_calculation">SHAP calculation</option>
+                                <option selected value="shap_interaction">SHAP interactions</option>
+                                <option selected value="shap_clustering">SHAP clustering</option>
+                                <option selected value="sage_calculation">SAGE calculation</option>
+                                <option selected value="nshap_calculation">nSHAP calculation</option>
+                                <option selected value="gshap_calculation">gSHAP calculation</option>
+                                <option selected value="isage_calculation">iSAGE calculation</option>
+                            </select>
+                        </div>
+
+
+                        <label for="sage_treshold" class="form-label fw-bold">SAGE treshold</label>
+                        <input type="number" id="sage_treshold" name="sage_treshold" value="90" class="form-control">
+
+                        <div id="dimensionality_reduction_method" class="mb-3">
+                            <label for="dim_red_sel" class="form-label fw-bold">Dimensionality reduction method</label>
+                            <select id="dim_red_sel" name="dim_red_sel" class="form-select">
+                                <option selected value="PaCMAP">PaCMAP</option>
+                                <option value="UMAP">UMAP</option>
+                            </select>
+                        </div>
+
+
+                        <div id="perform_subclustering" class="mb-3">
+                            <label for="perform_subcl_sel" class="form-label fw-bold">Perform subclustering</label>
+                            <select id="perform_subcl_sel" name="perform_subcl_sel" class="form-select">
+                                <option value="True">True</option>
+                                <option selected value="False">False</option>
+                            </select>
+                        </div>
+
+
+                        <div id="subcluster_prob_threshold" class="mb-3" style="display: none">
+                            <label for="subcl_treshold" class="form-label fw-bold">Subclustering threshold</label>
+                            <input type="number" id="subcl_treshold" name="subcl_treshold" value="0.6" min="0" max="1"
+                                class="form-control">
+                        </div>
+
+
+
+
+                        <button type="button" id="submitConfig" class="btn btn-warning w-100">Submit
+                            configuration</button>
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+    </div>
+
+    <script>
+
+        const ml_class_algos = ["BalancedRandomForestCls", "LGBMModel", "ExtraTreesModel", "HistGradientBoostingCls"];
+        const ml_reg_algos = ["AdaBoostModel", "LGBMModel", "XGBoostModel", "ExtraTreesModel", "GradientBoostingModel", "HistGradientBoostingModel"];
+
+        // Add an event listener to the ML task type select element
+        const mlTypeSelectElement = document.getElementById('ml_type_sel');
+        const mlAlgoSelectElement = document.getElementById('ml_models_sel');
+
+        const perfSubclElement = document.getElementById('perform_subclustering');
+
+
+        mlTypeSelectElement.addEventListener('change', (event) => {
+            // Get the selected option value
+            const selectedValue = event.target.value;
+
+            mlAlgoSelectElement.innerHTML = "";
+
+            if (selectedValue == "classification") {
+                ml_class_algos.forEach(algo => {
+                    const opt = document.createElement("option");
+                    opt.value = algo;
+                    opt.textContent = algo;
+                    opt.selected = true;
+                    mlAlgoSelectElement.appendChild(opt);
+                });
+
+            }
+            else {
+                ml_reg_algos.forEach(algo => {
+                    const opt = document.createElement("option");
+                    opt.value = algo;
+                    opt.textContent = algo;
+                    opt.selected = true;
+                    mlAlgoSelectElement.appendChild(opt);
+                });
+            }
+            if (typeof mlAlgoSelectElement.loadOptions === "function") {
+                mlAlgoSelectElement.loadOptions();
+            }
+        });
+
+
+        perfSubclElement.addEventListener('change', (event) => {
+            // Get the selected option value
+            const selectedValue = event.target.value;
+
+            if (selectedValue == "True") {
+                document.getElementById('subcluster_prob_threshold').style.display = 'block';
+            }
+            else {
+                document.getElementById('subcluster_prob_threshold').style.display = 'none';
+            }
+        });
+
+
+        // Manually dispatch the change event
+        mlTypeSelectElement.dispatchEvent(new Event('change'));
+
+        const form = document.getElementById('uploadForm');
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const fileInput = document.getElementById('csvFile');
+            const file = fileInput.files[0];
+            const project_name = document.getElementById('project_name').value;
+
+            if (!file) {
+                alert('Please select a file');
+                return;
+            }
+
+            const formData = new FormData();
+
+            formData.append('file', file);
+            formData.append('project_name', project_name);
+
+            try {
+                const response = await fetch('http://localhost:5000/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+
+                const data = await response.json();
+                document.getElementById('response').textContent = JSON.stringify(data, null, 2);
+
+                // Show the additional section
+                alert('distribution:' + data.distribution)
+                if (data.message.includes('OK')) {
+                    const checkboxContainer = document.getElementById('checkboxContainer');
+                    //checkboxContainer.innerHTML = ''; // Clear previous checkboxes
+                    const selectElement = document.getElementById('columns_sel');
+
+
+                    selectElement.innerHTML = "";
+
+                    data.columns.forEach(column => {
+                        const opt = document.createElement("option");
+                        opt.value = column;
+                        opt.textContent = column;
+                        selectElement.appendChild(opt);
+
+                    });
+                    selectElement.loadOptions();
+
+
+                    const datetimeElement = document.getElementById('date_time_col_sel');
+
+                    datetimeElement.innerHTML = "";
+
+                    data.columns.forEach(column => {
+                        const opt = document.createElement("option");
+                        opt.value = column;
+                        opt.textContent = column;
+                        datetimeElement.appendChild(opt);
+
+                    });
+                    datetimeElement.loadOptions();
+
+                    const filterColContainer = document.getElementById('filterColContainer');
+                    //checkboxContainer.innerHTML = ''; // Clear previous checkboxes
+                    const filterColElement = document.getElementById('filter_col_sel');
+
+
+                    data.columns.forEach(column => {
+                        const opt = document.createElement("option");
+                        opt.value = column;
+                        opt.textContent = column;
+                        filterColElement.appendChild(opt);
+
+                    });
+                    filterColElement.loadOptions();
+
+                    document.getElementById('additionalSection').style.visibility = 'visible'; // Show section
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('response').textContent = 'Error: ' + error.message;
+            }
+        });
+
+        // Function to handle the submission of selected checkboxes and options
+        document.getElementById('submitConfig').addEventListener('click', async () => {
+
+            const user_name = document.getElementById('user_name').value;
+
+            const selectedColumns = Array.from(document.getElementById('columns_sel').selectedOptions).map(option => option.value);
+            const datetimeColumns = Array.from(document.getElementById('date_time_col_sel').selectedOptions).map(option => option.value);
+            const selectedAlgorithms = Array.from(document.getElementById('metaheuristics_sel').selectedOptions).map(option => option.value);
+
+            const select2Value = document.getElementById('ml_type_sel').value;
+            const dataUsageValue = document.getElementById('data_usage_sel').value;
+            const selectedModels = Array.from(document.getElementById('ml_models_sel').selectedOptions).map(option => option.value);
+            const functionExec = Array.from(document.getElementById('func_exec_sel').selectedOptions).map(option => option.value);
+            const num_epochs = parseInt(document.getElementById('num_epochs').value);
+            const population_size = parseInt(document.getElementById('population_size').value);
+            const selectedFilterColumn = Array.from(document.getElementById('filter_col_sel').selectedOptions).map(option => option.value);
+            const sage_treshold = parseInt(document.getElementById('sage_treshold').value);
+            const dim_red = document.getElementById('dim_red_sel').value;
+            const perform_subcl = document.getElementById('perform_subcl_sel').value === "True";
+            const subcl_treshold = parseFloat(document.getElementById('subcl_treshold').value);
+
+
+
+            const configData = {
+                'user_name': user_name,
+                'targets': selectedColumns,
+                'mh_algorithms': selectedAlgorithms,
+                'task_type': select2Value,
+                'ml_models': selectedModels,
+                'num_epochs': num_epochs,
+                'population_size': population_size,
+                'filter_col': selectedFilterColumn,
+                'data_usage': dataUsageValue,
+                'datetime_col': datetimeColumns,
+                'tasks_to_execute': functionExec,
+                'sage_treshold': sage_treshold,
+                'dimensionality_reduction_method': dim_red,
+                'perform_subclustering': perform_subcl,
+                'subcl_treshold': subcl_treshold
+            };
+
+            try {
+                const response = await fetch('http://localhost:5000/configure', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(configData)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+
+                const result = await response.json();
+                document.getElementById('response').textContent = JSON.stringify(result, null, 2);
+
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('response').textContent = 'Error: ' + error.message;
+            }
+        });
+    </script>
+</body>
+
+</html>

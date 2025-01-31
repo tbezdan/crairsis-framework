@@ -1,9 +1,9 @@
 from datetime import datetime
-from utils.config import ROOT
 import os
 
 
 def log_setup_info(
+    ROOT,
     user_name,
     num_epochs,
     population_size,
