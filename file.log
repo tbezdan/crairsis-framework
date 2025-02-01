@@ -9518,3 +9518,458 @@ ExtraTreesModel 0.8536
 2025-01-30 21:04:22,449 - xai.isage_analysis - INFO - Loading data and model for filename_ca_housing_filter_col_None_filter_val_None_target_target_ml_model_LGBMModel_mh_algo_SCA
 2025-01-30 21:04:22,486 - xai.isage_analysis - INFO - iSAGE started
 2025-01-30 21:06:02,639 - xai.isage_analysis - INFO - iSAGE completed
+2025-01-31 15:06:45,748 - utils.train_and_optimize - INFO - File: ca_housing
+2025-01-31 15:06:45,783 - utils.train_and_optimize - INFO - -------Target: HouseAgeBinaryCat-------
+2025-01-31 15:06:45,795 - utils.train_and_optimize - INFO - ----------ML model evaluation----------
+2025-01-31 15:06:45,796 - utils.train_and_optimize - INFO - Target distribution:
+0    1563
+1    1437
+Name: HouseAgeBinaryCat, dtype: int64
+2025-01-31 15:06:45,797 - utils.train_and_optimize - INFO - 
+
+Evaluating: BalancedRandomForestCls CV
+2025-01-31 15:06:49,592 - utils.train_and_optimize - INFO - Confusion Matrix:
+[[1561    2]
+ [   0 1437]]
+2025-01-31 15:06:53,186 - utils.train_and_optimize - INFO - accuracy: 0.9993333333333333
+2025-01-31 15:06:53,187 - utils.train_and_optimize - INFO - f1_score: 0.9993045897079277
+2025-01-31 15:06:53,187 - utils.train_and_optimize - INFO - precision: 0.9986101459346769
+2025-01-31 15:06:53,188 - utils.train_and_optimize - INFO - recall: 1.0
+2025-01-31 15:06:53,188 - utils.train_and_optimize - INFO - roc_auc: 0.9999697243715693
+2025-01-31 15:06:53,188 - utils.train_and_optimize - INFO - log_loss: 0.012166888069750399
+2025-01-31 15:06:53,189 - utils.train_and_optimize - INFO - macro avg precision: 0.9993050729673385
+2025-01-31 15:06:53,189 - utils.train_and_optimize - INFO - macro avg recall: 0.999360204734485
+2025-01-31 15:06:53,189 - utils.train_and_optimize - INFO - macro avg f1-score: 0.9993321924211853
+2025-01-31 15:06:53,190 - utils.train_and_optimize - INFO - macro avg support: 3000.0
+2025-01-31 15:06:53,190 - utils.train_and_optimize - INFO - weighted avg precision: 0.9993342599027102
+2025-01-31 15:06:53,190 - utils.train_and_optimize - INFO - weighted avg recall: 0.9993333333333333
+2025-01-31 15:06:53,190 - utils.train_and_optimize - INFO - weighted avg f1-score: 0.999333351735142
+2025-01-31 15:06:53,190 - utils.train_and_optimize - INFO - weighted avg support: 3000.0
+2025-01-31 15:06:53,191 - utils.train_and_optimize - INFO - 
+
+Evaluating: LGBMModel CV
+2025-01-31 15:06:53,768 - utils.train_and_optimize - INFO - Confusion Matrix:
+[[1561    2]
+ [   0 1437]]
+2025-01-31 15:06:54,311 - utils.train_and_optimize - INFO - accuracy: 0.9993333333333333
+2025-01-31 15:06:54,312 - utils.train_and_optimize - INFO - f1_score: 0.9993045897079277
+2025-01-31 15:06:54,312 - utils.train_and_optimize - INFO - precision: 0.9986101459346769
+2025-01-31 15:06:54,312 - utils.train_and_optimize - INFO - recall: 1.0
+2025-01-31 15:06:54,312 - utils.train_and_optimize - INFO - roc_auc: 0.9999548091722688
+2025-01-31 15:06:54,313 - utils.train_and_optimize - INFO - log_loss: 0.005916235497506315
+2025-01-31 15:06:54,313 - utils.train_and_optimize - INFO - macro avg precision: 0.9993050729673385
+2025-01-31 15:06:54,313 - utils.train_and_optimize - INFO - macro avg recall: 0.999360204734485
+2025-01-31 15:06:54,313 - utils.train_and_optimize - INFO - macro avg f1-score: 0.9993321924211853
+2025-01-31 15:06:54,313 - utils.train_and_optimize - INFO - macro avg support: 3000.0
+2025-01-31 15:06:54,314 - utils.train_and_optimize - INFO - weighted avg precision: 0.9993342599027102
+2025-01-31 15:06:54,314 - utils.train_and_optimize - INFO - weighted avg recall: 0.9993333333333333
+2025-01-31 15:06:54,314 - utils.train_and_optimize - INFO - weighted avg f1-score: 0.999333351735142
+2025-01-31 15:06:54,314 - utils.train_and_optimize - INFO - weighted avg support: 3000.0
+2025-01-31 15:06:54,314 - utils.train_and_optimize - INFO - 
+
+Evaluating: ExtraTreesModel CV
+2025-01-31 15:06:55,826 - utils.train_and_optimize - INFO - Confusion Matrix:
+[[1560    3]
+ [   5 1432]]
+2025-01-31 15:06:57,365 - utils.train_and_optimize - INFO - accuracy: 0.9973333333333333
+2025-01-31 15:06:57,366 - utils.train_and_optimize - INFO - f1_score: 0.9972144846796657
+2025-01-31 15:06:57,367 - utils.train_and_optimize - INFO - precision: 0.9979094076655052
+2025-01-31 15:06:57,367 - utils.train_and_optimize - INFO - recall: 0.9965205288796103
+2025-01-31 15:06:57,368 - utils.train_and_optimize - INFO - roc_auc: 0.999987088334934
+2025-01-31 15:06:57,368 - utils.train_and_optimize - INFO - log_loss: 0.042753440240318845
+2025-01-31 15:06:57,369 - utils.train_and_optimize - INFO - macro avg precision: 0.9973572597432957
+2025-01-31 15:06:57,369 - utils.train_and_optimize - INFO - macro avg recall: 0.9973005715415326
+2025-01-31 15:06:57,370 - utils.train_and_optimize - INFO - macro avg f1-score: 0.9973284699613163
+2025-01-31 15:06:57,370 - utils.train_and_optimize - INFO - macro avg support: 3000.0
+2025-01-31 15:06:57,371 - utils.train_and_optimize - INFO - weighted avg precision: 0.997334069530563
+2025-01-31 15:06:57,371 - utils.train_and_optimize - INFO - weighted avg recall: 0.9973333333333333
+2025-01-31 15:06:57,372 - utils.train_and_optimize - INFO - weighted avg f1-score: 0.9973332573431456
+2025-01-31 15:06:57,372 - utils.train_and_optimize - INFO - weighted avg support: 3000.0
+2025-01-31 15:06:57,372 - utils.train_and_optimize - INFO - 
+
+Evaluating: HistGradientBoostingCls CV
+2025-01-31 15:07:00,189 - utils.train_and_optimize - INFO - Confusion Matrix:
+[[1561    2]
+ [   0 1437]]
+2025-01-31 15:07:03,024 - utils.train_and_optimize - INFO - accuracy: 0.9993333333333333
+2025-01-31 15:07:03,025 - utils.train_and_optimize - INFO - f1_score: 0.9993045897079277
+2025-01-31 15:07:03,028 - utils.train_and_optimize - INFO - precision: 0.9986101459346769
+2025-01-31 15:07:03,029 - utils.train_and_optimize - INFO - recall: 1.0
+2025-01-31 15:07:03,029 - utils.train_and_optimize - INFO - roc_auc: 0.9999732862102082
+2025-01-31 15:07:03,029 - utils.train_and_optimize - INFO - log_loss: 0.004976677627250282
+2025-01-31 15:07:03,030 - utils.train_and_optimize - INFO - macro avg precision: 0.9993050729673385
+2025-01-31 15:07:03,030 - utils.train_and_optimize - INFO - macro avg recall: 0.999360204734485
+2025-01-31 15:07:03,030 - utils.train_and_optimize - INFO - macro avg f1-score: 0.9993321924211853
+2025-01-31 15:07:03,030 - utils.train_and_optimize - INFO - macro avg support: 3000.0
+2025-01-31 15:07:03,031 - utils.train_and_optimize - INFO - weighted avg precision: 0.9993342599027102
+2025-01-31 15:07:03,031 - utils.train_and_optimize - INFO - weighted avg recall: 0.9993333333333333
+2025-01-31 15:07:03,031 - utils.train_and_optimize - INFO - weighted avg f1-score: 0.999333351735142
+2025-01-31 15:07:03,032 - utils.train_and_optimize - INFO - weighted avg support: 3000.0
+2025-01-31 15:07:03,040 - utils.train_and_optimize - INFO - Top models:
+               ml_model f1_score
+BalancedRandomForestCls   0.9993
+              LGBMModel   0.9993
+HistGradientBoostingCls   0.9993
+2025-01-31 15:07:03,042 - utils.train_and_optimize - INFO - -------------Optimization-------------
+2025-01-31 15:07:03,042 - utils.train_and_optimize - INFO - Optimizing: BalancedRandomForestCls CV
+2025-01-31 15:07:03,043 - optimization.optimization_problem - INFO - Initializing BaseOptimizerProblem with cross-validation
+2025-01-31 15:10:12,780 - optimization.optimizer - INFO - Model: BalancedRandomForestCls, Dataset: ca_housing, Best Log Loss: 0.004104781401711247
+2025-01-31 15:10:49,437 - utils.train_and_optimize - INFO - Optimized BalancedRandomForestCls CV by SCA
+2025-01-31 15:10:49,438 - utils.train_and_optimize - INFO - accuracy: 0.9993333333333333
+2025-01-31 15:10:49,438 - utils.train_and_optimize - INFO - f1_score: 0.9993045897079277
+2025-01-31 15:10:49,438 - utils.train_and_optimize - INFO - precision: 0.9986101459346769
+2025-01-31 15:10:49,439 - utils.train_and_optimize - INFO - recall: 1.0
+2025-01-31 15:10:49,439 - utils.train_and_optimize - INFO - roc_auc: 0.9999325476807756
+2025-01-31 15:10:49,439 - utils.train_and_optimize - INFO - log_loss: 0.004104781401711247
+2025-01-31 15:10:53,431 - utils.train_and_optimize - INFO - Optimized BalancedRandomForestCls by SCA
+2025-01-31 15:10:53,432 - utils.train_and_optimize - INFO - accuracy: 1.0
+2025-01-31 15:10:53,432 - utils.train_and_optimize - INFO - f1_score: 1.0
+2025-01-31 15:10:53,432 - utils.train_and_optimize - INFO - precision: 1.0
+2025-01-31 15:10:53,432 - utils.train_and_optimize - INFO - recall: 1.0
+2025-01-31 15:10:53,433 - utils.train_and_optimize - INFO - roc_auc: 1.0
+2025-01-31 15:10:53,433 - utils.train_and_optimize - INFO - log_loss: 0.0004479454264042537
+2025-01-31 15:10:54,257 - utils.train_and_optimize - INFO - Optimizing: LGBMModel CV
+2025-01-31 15:10:54,258 - optimization.optimization_problem - INFO - Initializing BaseOptimizerProblem with cross-validation
+2025-01-31 15:11:21,636 - optimization.optimizer - INFO - Model: LGBMModel, Dataset: ca_housing, Best Log Loss: 0.0035661702665206437
+2025-01-31 15:11:24,201 - utils.train_and_optimize - INFO - Optimized LGBMModel CV by SCA
+2025-01-31 15:11:24,202 - utils.train_and_optimize - INFO - accuracy: 0.9993333333333333
+2025-01-31 15:11:24,202 - utils.train_and_optimize - INFO - f1_score: 0.9993045897079277
+2025-01-31 15:11:24,203 - utils.train_and_optimize - INFO - precision: 0.9986101459346769
+2025-01-31 15:11:24,203 - utils.train_and_optimize - INFO - recall: 1.0
+2025-01-31 15:11:24,203 - utils.train_and_optimize - INFO - roc_auc: 0.9999804098874859
+2025-01-31 15:11:24,204 - utils.train_and_optimize - INFO - log_loss: 0.0035661702665206432
+2025-01-31 15:11:24,488 - utils.train_and_optimize - INFO - Optimized LGBMModel by SCA
+2025-01-31 15:11:24,489 - utils.train_and_optimize - INFO - accuracy: 1.0
+2025-01-31 15:11:24,489 - utils.train_and_optimize - INFO - f1_score: 1.0
+2025-01-31 15:11:24,490 - utils.train_and_optimize - INFO - precision: 1.0
+2025-01-31 15:11:24,490 - utils.train_and_optimize - INFO - recall: 1.0
+2025-01-31 15:11:24,490 - utils.train_and_optimize - INFO - roc_auc: 1.0
+2025-01-31 15:11:24,490 - utils.train_and_optimize - INFO - log_loss: 0.0010129143941099527
+2025-01-31 15:11:24,532 - utils.train_and_optimize - INFO - Optimizing: HistGradientBoostingCls CV
+2025-01-31 15:11:24,533 - optimization.optimization_problem - INFO - Initializing BaseOptimizerProblem with cross-validation
+2025-01-31 15:11:55,688 - optimization.optimizer - INFO - Model: HistGradientBoostingCls, Dataset: ca_housing, Best Log Loss: 0.0037261993593774383
+2025-01-31 15:11:58,193 - utils.train_and_optimize - INFO - Optimized HistGradientBoostingCls CV by SCA
+2025-01-31 15:11:58,195 - utils.train_and_optimize - INFO - accuracy: 0.9993333333333333
+2025-01-31 15:11:58,196 - utils.train_and_optimize - INFO - f1_score: 0.9993045897079277
+2025-01-31 15:11:58,196 - utils.train_and_optimize - INFO - precision: 0.9986101459346769
+2025-01-31 15:11:58,197 - utils.train_and_optimize - INFO - recall: 1.0
+2025-01-31 15:11:58,197 - utils.train_and_optimize - INFO - roc_auc: 0.9999853074156145
+2025-01-31 15:11:58,198 - utils.train_and_optimize - INFO - log_loss: 0.0037261993593774396
+2025-01-31 15:11:58,547 - utils.train_and_optimize - INFO - Optimized HistGradientBoostingCls by SCA
+2025-01-31 15:11:58,548 - utils.train_and_optimize - INFO - accuracy: 1.0
+2025-01-31 15:11:58,548 - utils.train_and_optimize - INFO - f1_score: 1.0
+2025-01-31 15:11:58,549 - utils.train_and_optimize - INFO - precision: 1.0
+2025-01-31 15:11:58,549 - utils.train_and_optimize - INFO - recall: 1.0
+2025-01-31 15:11:58,549 - utils.train_and_optimize - INFO - roc_auc: 1.0
+2025-01-31 15:11:58,549 - utils.train_and_optimize - INFO - log_loss: 0.0005538364625850321
+2025-01-31 15:11:58,609 - utils.train_and_optimize - INFO -    iteration    g_best    runtime                 ml_model metaheuristic    filename filter_column filter_value             target
+0          1  0.004498  55.801224  BalancedRandomForestCls           SCA  ca_housing          None         None  HouseAgeBinaryCat
+1          2  0.004105  44.736065  BalancedRandomForestCls           SCA  ca_housing          None         None  HouseAgeBinaryCat
+2          1  0.003757   7.810904                LGBMModel           SCA  ca_housing          None         None  HouseAgeBinaryCat
+3          2  0.003566   9.071072                LGBMModel           SCA  ca_housing          None         None  HouseAgeBinaryCat
+4          1  0.003934  11.700330  HistGradientBoostingCls           SCA  ca_housing          None         None  HouseAgeBinaryCat
+5          2  0.003726   8.757573  HistGradientBoostingCls           SCA  ca_housing          None         None  HouseAgeBinaryCat
+2025-01-31 15:11:58,643 - utils.train_and_optimize - INFO - JSON options file saved for ca_housing
+2025-01-31 15:11:58,728 - utils.best_eval - INFO - Loading model from C:\Users\tbezdan\Desktop\crAIRsis datasets\cls_test\models\filename_ca_housing_filter_col_None_filter_val_None_target_HouseAgeBinaryCat_ml_model_BalancedRandomForestCls_mh_algo_SCA.joblib
+2025-01-31 15:11:59,167 - utils.best_eval - INFO - Loading data from C:\Users\tbezdan\Desktop\crAIRsis datasets\cls_test\data\datasets\filename_ca_housing_filter_col_None_filter_val_None_target_HouseAgeBinaryCat.csv
+2025-01-31 15:11:59,284 - utils.best_eval - INFO - filename_ca_housing_filter_col_None_filter_val_None_target_HouseAgeBinaryCat_ml_model_BalancedRandomForestCls_mh_algo_SCA
+2025-01-31 15:11:59,300 - utils.best_eval - INFO - Accuracy: 1.0
+2025-01-31 15:11:59,300 - utils.best_eval - INFO - F1 Score: 1.0
+2025-01-31 15:11:59,301 - utils.best_eval - INFO - Precision: 1.0
+2025-01-31 15:11:59,301 - utils.best_eval - INFO - Recall: 1.0
+2025-01-31 15:11:59,301 - utils.best_eval - INFO - Classification Report: {'0': {'precision': 1.0, 'recall': 1.0, 'f1-score': 1.0, 'support': 313.0}, '1': {'precision': 1.0, 'recall': 1.0, 'f1-score': 1.0, 'support': 287.0}, 'accuracy': 1.0, 'macro avg': {'precision': 1.0, 'recall': 1.0, 'f1-score': 1.0, 'support': 600.0}, 'weighted avg': {'precision': 1.0, 'recall': 1.0, 'f1-score': 1.0, 'support': 600.0}}
+2025-01-31 15:11:59,310 - xai.shap_analysis - INFO - Processing model 1/1: Start
+2025-01-31 15:11:59,311 - xai.shap_analysis - INFO - Loading data and model for filename_ca_housing_filter_col_None_filter_val_None_target_HouseAgeBinaryCat_ml_model_BalancedRandomForestCls_mh_algo_SCA
+2025-01-31 15:11:59,771 - xai.shap_analysis - INFO - Initializing SHAP explainer
+2025-01-31 15:11:59,863 - xai.shap_analysis - INFO - Performing local SHAP analysis for class 0
+2025-01-31 15:11:59,950 - xai.shap_analysis - INFO - Analyzing main effects and interactions for class 0
+2025-01-31 15:11:59,951 - xai.shap_analysis - INFO - Performing local SHAP analysis for class 1
+2025-01-31 15:12:00,051 - xai.shap_analysis - INFO - Analyzing main effects and interactions for class 1
+2025-01-31 15:12:00,261 - xai.shap_analysis - INFO - Processing model 1/1: Completed
+
+2025-01-31 15:12:00,268 - xai.shap_analysis - INFO - Processing model 1/1: Start
+2025-01-31 15:12:00,269 - xai.shap_analysis - INFO - Loading data and model for filename_ca_housing_filter_col_None_filter_val_None_target_HouseAgeBinaryCat_ml_model_BalancedRandomForestCls_mh_algo_SCA
+2025-01-31 15:12:00,770 - xai.shap_analysis - INFO - Initializing SHAP explainer
+2025-01-31 15:12:00,787 - xai.shap_analysis - INFO - Calculating SHAP interaction values
+2025-01-31 15:12:01,406 - xai.shap_analysis - INFO - Analyzing main effects and interactions for class 0
+2025-01-31 15:12:01,612 - xai.shap_analysis - INFO - Analyzing main effects and interactions for class 1
+2025-01-31 15:12:01,831 - xai.shap_analysis - INFO - Processing model 1/1: Completed
+
+2025-01-31 15:12:01,837 - xai.shap_clustering - INFO - Starting SHAP clustering process.
+2025-01-31 15:12:01,837 - xai.shap_clustering - INFO - Processing file: filename_ca_housing_filter_col_None_filter_val_None_target_HouseAgeBinaryCat_ml_model_BalancedRandomForestCls_mh_algo_SCA_impacts_local.csv
+2025-01-31 15:12:01,876 - xai.shap_clustering - INFO - Performing clustering for general data.
+2025-01-31 15:12:01,884 - xai.shap_clustering - INFO - Dimensionality reduction method: PaCMAP
+2025-01-31 15:12:04,447 - xai.shap_clustering - INFO - Starting subclustering process. Task type: classification
+2025-01-31 15:12:04,448 - xai.shap_clustering - INFO - Found 25 unique clusters: [-1  0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22
+ 23]
+2025-01-31 15:12:04,448 - xai.shap_clustering - INFO - Skipping noise points for cluster -1.
+2025-01-31 15:12:04,448 - xai.shap_clustering - INFO - Processing parent cluster 0.
+2025-01-31 15:12:04,451 - xai.shap_clustering - INFO - Cluster 0: Points after probability threshold filter: 16
+2025-01-31 15:12:04,455 - xai.shap_clustering - INFO - Parent cluster 0: Found 1 subclusters.
+2025-01-31 15:12:04,468 - xai.shap_clustering - INFO - Processing parent cluster 1.
+2025-01-31 15:12:04,470 - xai.shap_clustering - INFO - Cluster 1: Points after probability threshold filter: 12
+2025-01-31 15:12:04,473 - xai.shap_clustering - INFO - Parent cluster 1: Found 1 subclusters.
+2025-01-31 15:12:04,485 - xai.shap_clustering - INFO - Processing parent cluster 2.
+2025-01-31 15:12:04,487 - xai.shap_clustering - INFO - Cluster 2: Points after probability threshold filter: 20
+2025-01-31 15:12:04,493 - xai.shap_clustering - INFO - Parent cluster 2: Found 2 subclusters.
+2025-01-31 15:12:04,508 - xai.shap_clustering - INFO - Processing parent cluster 3.
+2025-01-31 15:12:04,510 - xai.shap_clustering - INFO - Cluster 3: Points after probability threshold filter: 14
+2025-01-31 15:12:04,513 - xai.shap_clustering - INFO - Parent cluster 3: Found 1 subclusters.
+2025-01-31 15:12:04,523 - xai.shap_clustering - INFO - Processing parent cluster 4.
+2025-01-31 15:12:04,525 - xai.shap_clustering - INFO - Cluster 4: Points after probability threshold filter: 13
+2025-01-31 15:12:04,530 - xai.shap_clustering - INFO - Parent cluster 4: Found 1 subclusters.
+2025-01-31 15:12:04,541 - xai.shap_clustering - INFO - Processing parent cluster 5.
+2025-01-31 15:12:04,543 - xai.shap_clustering - INFO - Cluster 5: Points after probability threshold filter: 14
+2025-01-31 15:12:04,545 - xai.shap_clustering - INFO - Parent cluster 5: Found 1 subclusters.
+2025-01-31 15:12:04,552 - xai.shap_clustering - INFO - Processing parent cluster 6.
+2025-01-31 15:12:04,553 - xai.shap_clustering - INFO - Cluster 6: Points after probability threshold filter: 14
+2025-01-31 15:12:04,556 - xai.shap_clustering - INFO - Parent cluster 6: Found 1 subclusters.
+2025-01-31 15:12:04,563 - xai.shap_clustering - INFO - Processing parent cluster 7.
+2025-01-31 15:12:04,565 - xai.shap_clustering - INFO - Cluster 7: Points after probability threshold filter: 13
+2025-01-31 15:12:04,569 - xai.shap_clustering - INFO - Parent cluster 7: Found 1 subclusters.
+2025-01-31 15:12:04,575 - xai.shap_clustering - INFO - Processing parent cluster 8.
+2025-01-31 15:12:04,576 - xai.shap_clustering - INFO - Cluster 8: Points after probability threshold filter: 12
+2025-01-31 15:12:04,578 - xai.shap_clustering - INFO - Parent cluster 8: Found 1 subclusters.
+2025-01-31 15:12:04,584 - xai.shap_clustering - INFO - Processing parent cluster 9.
+2025-01-31 15:12:04,585 - xai.shap_clustering - INFO - Cluster 9: Points after probability threshold filter: 14
+2025-01-31 15:12:04,589 - xai.shap_clustering - INFO - Parent cluster 9: Found 1 subclusters.
+2025-01-31 15:12:04,596 - xai.shap_clustering - INFO - Processing parent cluster 10.
+2025-01-31 15:12:04,599 - xai.shap_clustering - INFO - Cluster 10: Points after probability threshold filter: 15
+2025-01-31 15:12:04,601 - xai.shap_clustering - INFO - Parent cluster 10: Found 1 subclusters.
+2025-01-31 15:12:04,607 - xai.shap_clustering - INFO - Processing parent cluster 11.
+2025-01-31 15:12:04,608 - xai.shap_clustering - INFO - Cluster 11: Points after probability threshold filter: 14
+2025-01-31 15:12:04,610 - xai.shap_clustering - INFO - Parent cluster 11: Found 1 subclusters.
+2025-01-31 15:12:04,616 - xai.shap_clustering - INFO - Processing parent cluster 12.
+2025-01-31 15:12:04,617 - xai.shap_clustering - INFO - Cluster 12: Points after probability threshold filter: 13
+2025-01-31 15:12:04,620 - xai.shap_clustering - INFO - Parent cluster 12: Found 1 subclusters.
+2025-01-31 15:12:04,628 - xai.shap_clustering - INFO - Processing parent cluster 13.
+2025-01-31 15:12:04,629 - xai.shap_clustering - INFO - Cluster 13: Points after probability threshold filter: 13
+2025-01-31 15:12:04,635 - xai.shap_clustering - INFO - Parent cluster 13: Found 1 subclusters.
+2025-01-31 15:12:04,648 - xai.shap_clustering - INFO - Processing parent cluster 14.
+2025-01-31 15:12:04,649 - xai.shap_clustering - INFO - Cluster 14: Points after probability threshold filter: 15
+2025-01-31 15:12:04,654 - xai.shap_clustering - INFO - Parent cluster 14: Found 1 subclusters.
+2025-01-31 15:12:04,667 - xai.shap_clustering - INFO - Processing parent cluster 15.
+2025-01-31 15:12:04,668 - xai.shap_clustering - INFO - Cluster 15: Points after probability threshold filter: 14
+2025-01-31 15:12:04,671 - xai.shap_clustering - INFO - Parent cluster 15: Found 1 subclusters.
+2025-01-31 15:12:04,681 - xai.shap_clustering - INFO - Processing parent cluster 16.
+2025-01-31 15:12:04,682 - xai.shap_clustering - INFO - Cluster 16: Points after probability threshold filter: 49
+2025-01-31 15:12:04,692 - xai.shap_clustering - INFO - Parent cluster 16: Found 5 subclusters.
+2025-01-31 15:12:04,712 - xai.shap_clustering - INFO - Processing parent cluster 17.
+2025-01-31 15:12:04,715 - xai.shap_clustering - INFO - Cluster 17: Points after probability threshold filter: 13
+2025-01-31 15:12:04,721 - xai.shap_clustering - INFO - Parent cluster 17: Found 1 subclusters.
+2025-01-31 15:12:04,733 - xai.shap_clustering - INFO - Processing parent cluster 18.
+2025-01-31 15:12:04,735 - xai.shap_clustering - INFO - Cluster 18: Points after probability threshold filter: 14
+2025-01-31 15:12:04,740 - xai.shap_clustering - INFO - Parent cluster 18: Found 1 subclusters.
+2025-01-31 15:12:04,748 - xai.shap_clustering - INFO - Processing parent cluster 19.
+2025-01-31 15:12:04,750 - xai.shap_clustering - INFO - Cluster 19: Points after probability threshold filter: 22
+2025-01-31 15:12:04,753 - xai.shap_clustering - INFO - Parent cluster 19: Found 1 subclusters.
+2025-01-31 15:12:04,760 - xai.shap_clustering - INFO - Processing parent cluster 20.
+2025-01-31 15:12:04,761 - xai.shap_clustering - INFO - Cluster 20: Points after probability threshold filter: 19
+2025-01-31 15:12:04,764 - xai.shap_clustering - INFO - Parent cluster 20: Found 1 subclusters.
+2025-01-31 15:12:04,771 - xai.shap_clustering - INFO - Processing parent cluster 21.
+2025-01-31 15:12:04,772 - xai.shap_clustering - INFO - Cluster 21: Points after probability threshold filter: 16
+2025-01-31 15:12:04,776 - xai.shap_clustering - INFO - Parent cluster 21: Found 2 subclusters.
+2025-01-31 15:12:04,783 - xai.shap_clustering - INFO - Processing parent cluster 22.
+2025-01-31 15:12:04,784 - xai.shap_clustering - INFO - Cluster 22: Points after probability threshold filter: 29
+2025-01-31 15:12:04,788 - xai.shap_clustering - INFO - Parent cluster 22: Found 3 subclusters.
+2025-01-31 15:12:04,796 - xai.shap_clustering - INFO - Processing parent cluster 23.
+2025-01-31 15:12:04,797 - xai.shap_clustering - INFO - Cluster 23: Points after probability threshold filter: 15
+2025-01-31 15:12:04,800 - xai.shap_clustering - INFO - Parent cluster 23: Found 1 subclusters.
+2025-01-31 15:12:04,808 - xai.shap_clustering - INFO - Subclustering process completed.
+2025-01-31 15:12:04,809 - xai.shap_clustering - INFO - Successfully processed file: filename_ca_housing_filter_col_None_filter_val_None_target_HouseAgeBinaryCat_ml_model_BalancedRandomForestCls_mh_algo_SCA_impacts_local.csv
+2025-01-31 15:12:04,809 - xai.shap_clustering - INFO - Processing file: filename_ca_housing_filter_col_None_filter_val_None_target_HouseAgeBinaryCat_ml_model_BalancedRandomForestCls_mh_algo_SCA_impacts_local_class_0.csv
+2025-01-31 15:12:04,816 - xai.shap_clustering - INFO - Performing clustering for class: 0
+2025-01-31 15:12:04,822 - xai.shap_clustering - INFO - Dimensionality reduction method: PaCMAP
+2025-01-31 15:12:07,480 - xai.shap_clustering - INFO - Starting subclustering process. Task type: classification
+2025-01-31 15:12:07,481 - xai.shap_clustering - INFO - Processing subclustering for class label: 0
+2025-01-31 15:12:07,481 - xai.shap_clustering - INFO - Found 23 unique clusters: [-1  0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21]
+2025-01-31 15:12:07,482 - xai.shap_clustering - INFO - Skipping noise points for cluster -1.
+2025-01-31 15:12:07,483 - xai.shap_clustering - INFO - Processing parent cluster 0.
+2025-01-31 15:12:07,485 - xai.shap_clustering - INFO - Cluster 0: Points after probability threshold filter: 12
+2025-01-31 15:12:07,490 - xai.shap_clustering - INFO - Parent cluster 0: Found 1 subclusters.
+2025-01-31 15:12:07,503 - xai.shap_clustering - INFO - Processing parent cluster 1.
+2025-01-31 15:12:07,505 - xai.shap_clustering - INFO - Cluster 1: Points after probability threshold filter: 15
+2025-01-31 15:12:07,508 - xai.shap_clustering - INFO - Parent cluster 1: Found 1 subclusters.
+2025-01-31 15:12:07,515 - xai.shap_clustering - INFO - Processing parent cluster 2.
+2025-01-31 15:12:07,516 - xai.shap_clustering - INFO - Cluster 2: Points after probability threshold filter: 24
+2025-01-31 15:12:07,519 - xai.shap_clustering - INFO - Parent cluster 2: Found 3 subclusters.
+2025-01-31 15:12:07,527 - xai.shap_clustering - INFO - Processing parent cluster 3.
+2025-01-31 15:12:07,528 - xai.shap_clustering - INFO - Cluster 3: Points after probability threshold filter: 14
+2025-01-31 15:12:07,531 - xai.shap_clustering - INFO - Parent cluster 3: Found 1 subclusters.
+2025-01-31 15:12:07,537 - xai.shap_clustering - INFO - Processing parent cluster 4.
+2025-01-31 15:12:07,538 - xai.shap_clustering - INFO - Cluster 4: Points after probability threshold filter: 17
+2025-01-31 15:12:07,540 - xai.shap_clustering - INFO - Parent cluster 4: Found 1 subclusters.
+2025-01-31 15:12:07,546 - xai.shap_clustering - INFO - Processing parent cluster 5.
+2025-01-31 15:12:07,546 - xai.shap_clustering - INFO - Cluster 5: Points after probability threshold filter: 12
+2025-01-31 15:12:07,549 - xai.shap_clustering - INFO - Parent cluster 5: Found 1 subclusters.
+2025-01-31 15:12:07,555 - xai.shap_clustering - INFO - Processing parent cluster 6.
+2025-01-31 15:12:07,556 - xai.shap_clustering - INFO - Cluster 6: Points after probability threshold filter: 14
+2025-01-31 15:12:07,558 - xai.shap_clustering - INFO - Parent cluster 6: Found 1 subclusters.
+2025-01-31 15:12:07,564 - xai.shap_clustering - INFO - Processing parent cluster 7.
+2025-01-31 15:12:07,564 - xai.shap_clustering - INFO - Cluster 7: Points after probability threshold filter: 14
+2025-01-31 15:12:07,566 - xai.shap_clustering - INFO - Parent cluster 7: Found 1 subclusters.
+2025-01-31 15:12:07,572 - xai.shap_clustering - INFO - Processing parent cluster 8.
+2025-01-31 15:12:07,573 - xai.shap_clustering - INFO - Cluster 8: Points after probability threshold filter: 13
+2025-01-31 15:12:07,575 - xai.shap_clustering - INFO - Parent cluster 8: Found 1 subclusters.
+2025-01-31 15:12:07,583 - xai.shap_clustering - INFO - Processing parent cluster 9.
+2025-01-31 15:12:07,584 - xai.shap_clustering - INFO - Cluster 9: Points after probability threshold filter: 21
+2025-01-31 15:12:07,586 - xai.shap_clustering - INFO - Parent cluster 9: Found 1 subclusters.
+2025-01-31 15:12:07,594 - xai.shap_clustering - INFO - Processing parent cluster 10.
+2025-01-31 15:12:07,595 - xai.shap_clustering - INFO - Cluster 10: Points after probability threshold filter: 15
+2025-01-31 15:12:07,598 - xai.shap_clustering - INFO - Parent cluster 10: Found 3 subclusters.
+2025-01-31 15:12:07,605 - xai.shap_clustering - INFO - Processing parent cluster 11.
+2025-01-31 15:12:07,606 - xai.shap_clustering - INFO - Cluster 11: Points after probability threshold filter: 16
+2025-01-31 15:12:07,608 - xai.shap_clustering - INFO - Parent cluster 11: Found 3 subclusters.
+2025-01-31 15:12:07,622 - xai.shap_clustering - INFO - Processing parent cluster 12.
+2025-01-31 15:12:07,624 - xai.shap_clustering - INFO - Cluster 12: Points after probability threshold filter: 14
+2025-01-31 15:12:07,629 - xai.shap_clustering - INFO - Parent cluster 12: Found 1 subclusters.
+2025-01-31 15:12:07,637 - xai.shap_clustering - INFO - Processing parent cluster 13.
+2025-01-31 15:12:07,638 - xai.shap_clustering - INFO - Cluster 13: Points after probability threshold filter: 19
+2025-01-31 15:12:07,643 - xai.shap_clustering - INFO - Parent cluster 13: Found 1 subclusters.
+2025-01-31 15:12:07,656 - xai.shap_clustering - INFO - Processing parent cluster 14.
+2025-01-31 15:12:07,658 - xai.shap_clustering - INFO - Cluster 14: Points after probability threshold filter: 18
+2025-01-31 15:12:07,663 - xai.shap_clustering - INFO - Parent cluster 14: Found 1 subclusters.
+2025-01-31 15:12:07,676 - xai.shap_clustering - INFO - Processing parent cluster 15.
+2025-01-31 15:12:07,678 - xai.shap_clustering - INFO - Cluster 15: Points after probability threshold filter: 25
+2025-01-31 15:12:07,685 - xai.shap_clustering - INFO - Parent cluster 15: Found 3 subclusters.
+2025-01-31 15:12:07,700 - xai.shap_clustering - INFO - Processing parent cluster 16.
+2025-01-31 15:12:07,703 - xai.shap_clustering - INFO - Cluster 16: Points after probability threshold filter: 14
+2025-01-31 15:12:07,708 - xai.shap_clustering - INFO - Parent cluster 16: Found 1 subclusters.
+2025-01-31 15:12:07,716 - xai.shap_clustering - INFO - Processing parent cluster 17.
+2025-01-31 15:12:07,717 - xai.shap_clustering - INFO - Cluster 17: Points after probability threshold filter: 13
+2025-01-31 15:12:07,720 - xai.shap_clustering - INFO - Parent cluster 17: Found 1 subclusters.
+2025-01-31 15:12:07,727 - xai.shap_clustering - INFO - Processing parent cluster 18.
+2025-01-31 15:12:07,728 - xai.shap_clustering - INFO - Cluster 18: Points after probability threshold filter: 28
+2025-01-31 15:12:07,730 - xai.shap_clustering - INFO - Parent cluster 18: Found 2 subclusters.
+2025-01-31 15:12:07,740 - xai.shap_clustering - INFO - Processing parent cluster 19.
+2025-01-31 15:12:07,741 - xai.shap_clustering - INFO - Cluster 19: Points after probability threshold filter: 13
+2025-01-31 15:12:07,743 - xai.shap_clustering - INFO - Parent cluster 19: Found 1 subclusters.
+2025-01-31 15:12:07,749 - xai.shap_clustering - INFO - Processing parent cluster 20.
+2025-01-31 15:12:07,751 - xai.shap_clustering - INFO - Cluster 20: Points after probability threshold filter: 15
+2025-01-31 15:12:07,753 - xai.shap_clustering - INFO - Parent cluster 20: Found 1 subclusters.
+2025-01-31 15:12:07,759 - xai.shap_clustering - INFO - Processing parent cluster 21.
+2025-01-31 15:12:07,759 - xai.shap_clustering - INFO - Cluster 21: Points after probability threshold filter: 26
+2025-01-31 15:12:07,762 - xai.shap_clustering - INFO - Parent cluster 21: Found 3 subclusters.
+2025-01-31 15:12:07,769 - xai.shap_clustering - INFO - Subclustering process completed.
+2025-01-31 15:12:07,769 - xai.shap_clustering - INFO - Successfully processed file: filename_ca_housing_filter_col_None_filter_val_None_target_HouseAgeBinaryCat_ml_model_BalancedRandomForestCls_mh_algo_SCA_impacts_local_class_0.csv
+2025-01-31 15:12:07,770 - xai.shap_clustering - INFO - Processing file: filename_ca_housing_filter_col_None_filter_val_None_target_HouseAgeBinaryCat_ml_model_BalancedRandomForestCls_mh_algo_SCA_impacts_local_class_1.csv
+2025-01-31 15:12:07,776 - xai.shap_clustering - INFO - Performing clustering for class: 1
+2025-01-31 15:12:07,780 - xai.shap_clustering - INFO - Dimensionality reduction method: PaCMAP
+2025-01-31 15:12:10,480 - xai.shap_clustering - INFO - Starting subclustering process. Task type: classification
+2025-01-31 15:12:10,480 - xai.shap_clustering - INFO - Processing subclustering for class label: 1
+2025-01-31 15:12:10,481 - xai.shap_clustering - INFO - Found 24 unique clusters: [-1  0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22]
+2025-01-31 15:12:10,482 - xai.shap_clustering - INFO - Skipping noise points for cluster -1.
+2025-01-31 15:12:10,483 - xai.shap_clustering - INFO - Processing parent cluster 0.
+2025-01-31 15:12:10,485 - xai.shap_clustering - INFO - Cluster 0: Points after probability threshold filter: 15
+2025-01-31 15:12:10,490 - xai.shap_clustering - INFO - Parent cluster 0: Found 1 subclusters.
+2025-01-31 15:12:10,503 - xai.shap_clustering - INFO - Processing parent cluster 1.
+2025-01-31 15:12:10,504 - xai.shap_clustering - INFO - Cluster 1: Points after probability threshold filter: 16
+2025-01-31 15:12:10,507 - xai.shap_clustering - INFO - Parent cluster 1: Found 1 subclusters.
+2025-01-31 15:12:10,516 - xai.shap_clustering - INFO - Processing parent cluster 2.
+2025-01-31 15:12:10,518 - xai.shap_clustering - INFO - Cluster 2: Points after probability threshold filter: 15
+2025-01-31 15:12:10,522 - xai.shap_clustering - INFO - Parent cluster 2: Found 1 subclusters.
+2025-01-31 15:12:10,536 - xai.shap_clustering - INFO - Processing parent cluster 3.
+2025-01-31 15:12:10,537 - xai.shap_clustering - INFO - Cluster 3: Points after probability threshold filter: 12
+2025-01-31 15:12:10,543 - xai.shap_clustering - INFO - Parent cluster 3: Found 1 subclusters.
+2025-01-31 15:12:10,554 - xai.shap_clustering - INFO - Processing parent cluster 4.
+2025-01-31 15:12:10,556 - xai.shap_clustering - INFO - Cluster 4: Points after probability threshold filter: 16
+2025-01-31 15:12:10,558 - xai.shap_clustering - INFO - Parent cluster 4: Found 1 subclusters.
+2025-01-31 15:12:10,565 - xai.shap_clustering - INFO - Processing parent cluster 5.
+2025-01-31 15:12:10,566 - xai.shap_clustering - INFO - Cluster 5: Points after probability threshold filter: 13
+2025-01-31 15:12:10,568 - xai.shap_clustering - INFO - Parent cluster 5: Found 1 subclusters.
+2025-01-31 15:12:10,575 - xai.shap_clustering - INFO - Processing parent cluster 6.
+2025-01-31 15:12:10,576 - xai.shap_clustering - INFO - Cluster 6: Points after probability threshold filter: 13
+2025-01-31 15:12:10,578 - xai.shap_clustering - INFO - Parent cluster 6: Found 1 subclusters.
+2025-01-31 15:12:10,584 - xai.shap_clustering - INFO - Processing parent cluster 7.
+2025-01-31 15:12:10,585 - xai.shap_clustering - INFO - Cluster 7: Points after probability threshold filter: 14
+2025-01-31 15:12:10,588 - xai.shap_clustering - INFO - Parent cluster 7: Found 1 subclusters.
+2025-01-31 15:12:10,594 - xai.shap_clustering - INFO - Processing parent cluster 8.
+2025-01-31 15:12:10,595 - xai.shap_clustering - INFO - Cluster 8: Points after probability threshold filter: 15
+2025-01-31 15:12:10,597 - xai.shap_clustering - INFO - Parent cluster 8: Found 1 subclusters.
+2025-01-31 15:12:10,604 - xai.shap_clustering - INFO - Processing parent cluster 9.
+2025-01-31 15:12:10,605 - xai.shap_clustering - INFO - Cluster 9: Points after probability threshold filter: 15
+2025-01-31 15:12:10,607 - xai.shap_clustering - INFO - Parent cluster 9: Found 1 subclusters.
+2025-01-31 15:12:10,612 - xai.shap_clustering - INFO - Processing parent cluster 10.
+2025-01-31 15:12:10,613 - xai.shap_clustering - INFO - Cluster 10: Points after probability threshold filter: 13
+2025-01-31 15:12:10,616 - xai.shap_clustering - INFO - Parent cluster 10: Found 1 subclusters.
+2025-01-31 15:12:10,622 - xai.shap_clustering - INFO - Processing parent cluster 11.
+2025-01-31 15:12:10,623 - xai.shap_clustering - INFO - Cluster 11: Points after probability threshold filter: 21
+2025-01-31 15:12:10,625 - xai.shap_clustering - INFO - Parent cluster 11: Found 1 subclusters.
+2025-01-31 15:12:10,630 - xai.shap_clustering - INFO - Processing parent cluster 12.
+2025-01-31 15:12:10,633 - xai.shap_clustering - INFO - Cluster 12: Points after probability threshold filter: 21
+2025-01-31 15:12:10,635 - xai.shap_clustering - INFO - Parent cluster 12: Found 3 subclusters.
+2025-01-31 15:12:10,642 - xai.shap_clustering - INFO - Processing parent cluster 13.
+2025-01-31 15:12:10,644 - xai.shap_clustering - INFO - Cluster 13: Points after probability threshold filter: 13
+2025-01-31 15:12:10,649 - xai.shap_clustering - INFO - Parent cluster 13: Found 1 subclusters.
+2025-01-31 15:12:10,661 - xai.shap_clustering - INFO - Processing parent cluster 14.
+2025-01-31 15:12:10,663 - xai.shap_clustering - INFO - Cluster 14: Points after probability threshold filter: 17
+2025-01-31 15:12:10,668 - xai.shap_clustering - INFO - Parent cluster 14: Found 1 subclusters.
+2025-01-31 15:12:10,677 - xai.shap_clustering - INFO - Processing parent cluster 15.
+2025-01-31 15:12:10,678 - xai.shap_clustering - INFO - Cluster 15: Points after probability threshold filter: 14
+2025-01-31 15:12:10,683 - xai.shap_clustering - INFO - Parent cluster 15: Found 1 subclusters.
+2025-01-31 15:12:10,697 - xai.shap_clustering - INFO - Processing parent cluster 16.
+2025-01-31 15:12:10,699 - xai.shap_clustering - INFO - Cluster 16: Points after probability threshold filter: 16
+2025-01-31 15:12:10,703 - xai.shap_clustering - INFO - Parent cluster 16: Found 2 subclusters.
+2025-01-31 15:12:10,718 - xai.shap_clustering - INFO - Processing parent cluster 17.
+2025-01-31 15:12:10,720 - xai.shap_clustering - INFO - Cluster 17: Points after probability threshold filter: 13
+2025-01-31 15:12:10,725 - xai.shap_clustering - INFO - Parent cluster 17: Found 1 subclusters.
+2025-01-31 15:12:10,741 - xai.shap_clustering - INFO - Processing parent cluster 18.
+2025-01-31 15:12:10,742 - xai.shap_clustering - INFO - Cluster 18: Points after probability threshold filter: 24
+2025-01-31 15:12:10,745 - xai.shap_clustering - INFO - Parent cluster 18: Found 2 subclusters.
+2025-01-31 15:12:10,753 - xai.shap_clustering - INFO - Processing parent cluster 19.
+2025-01-31 15:12:10,754 - xai.shap_clustering - INFO - Cluster 19: Points after probability threshold filter: 14
+2025-01-31 15:12:10,757 - xai.shap_clustering - INFO - Parent cluster 19: Found 1 subclusters.
+2025-01-31 15:12:10,764 - xai.shap_clustering - INFO - Processing parent cluster 20.
+2025-01-31 15:12:10,765 - xai.shap_clustering - INFO - Cluster 20: Points after probability threshold filter: 15
+2025-01-31 15:12:10,767 - xai.shap_clustering - INFO - Parent cluster 20: Found 1 subclusters.
+2025-01-31 15:12:10,774 - xai.shap_clustering - INFO - Processing parent cluster 21.
+2025-01-31 15:12:10,775 - xai.shap_clustering - INFO - Cluster 21: Points after probability threshold filter: 12
+2025-01-31 15:12:10,777 - xai.shap_clustering - INFO - Parent cluster 21: Found 1 subclusters.
+2025-01-31 15:12:10,784 - xai.shap_clustering - INFO - Processing parent cluster 22.
+2025-01-31 15:12:10,785 - xai.shap_clustering - INFO - Cluster 22: Points after probability threshold filter: 13
+2025-01-31 15:12:10,787 - xai.shap_clustering - INFO - Parent cluster 22: Found 1 subclusters.
+2025-01-31 15:12:10,793 - xai.shap_clustering - INFO - Subclustering process completed.
+2025-01-31 15:12:10,793 - xai.shap_clustering - INFO - Successfully processed file: filename_ca_housing_filter_col_None_filter_val_None_target_HouseAgeBinaryCat_ml_model_BalancedRandomForestCls_mh_algo_SCA_impacts_local_class_1.csv
+2025-01-31 15:12:10,794 - xai.shap_clustering - INFO - SHAP clustering process completed.
+2025-01-31 15:12:10,797 - xai.sage_analysis - INFO - Starting SAGE analysis...
+2025-01-31 15:12:10,798 - xai.sage_analysis - INFO - Analyzing model: BalancedRandomForestCls with mh_algo: SCA for target: HouseAgeBinaryCat, filename: ca_housing, filter value: None
+2025-01-31 15:13:16,090 - xai.sage_analysis - INFO - SAGE analysis completed.
+2025-01-31 15:13:16,113 - xai.nshap_analysis - INFO - Processing model 1/1: Start
+2025-01-31 15:13:16,114 - xai.nshap_analysis - INFO - Loading data and model for filename_ca_housing_filter_col_None_filter_val_None_target_HouseAgeBinaryCat_ml_model_BalancedRandomForestCls_mh_algo_SCA
+2025-01-31 15:13:16,714 - xai.nshap_analysis - INFO - Training new model with the most important features from SAGE
+2025-01-31 15:13:19,589 - xai.nshap_analysis - INFO - Saving predictions for the new model
+2025-01-31 15:13:19,713 - xai.nshap_analysis - INFO - Predictions saved to C:\Users\tbezdan\Desktop\crAIRsis datasets\cls_test\data\nshap\filename_ca_housing_filter_col_None_filter_val_None_target_HouseAgeBinaryCat_ml_model_BalancedRandomForestCls_mh_algo_SCA_predictions.csv
+2025-01-31 15:13:19,714 - xai.nshap_analysis - INFO - Initializing nSHAP
+2025-01-31 15:13:19,754 - xai.nshap_analysis - INFO - Computing n shapley values
+2025-01-31 16:44:54,946 - xai.nshap_analysis - INFO - Computing shapley taylor values
+2025-01-31 18:02:43,389 - xai.nshap_analysis - INFO - Computing faith shap values
+2025-01-31 19:20:28,940 - xai.nshap_analysis - INFO - Computing shapley interaction index values
+2025-01-31 21:03:12,677 - xai.nshap_analysis - INFO - Computing banzhaf interaction index values
+2025-01-31 22:21:26,849 - xai.nshap_analysis - INFO - Computing faith banzhaf values
+2025-01-31 23:39:34,932 - xai.nshap_analysis - INFO - Computing moebius transform values
+2025-02-01 00:57:20,745 - xai.nshap_analysis - INFO - nSHAP completed
+2025-02-01 00:57:20,748 - xai.nshap_analysis - INFO - Allclose nSHAP
+2025-02-01 00:58:07,904 - xai.nshap_analysis - INFO - Allclose nSHAP completed
+2025-02-01 00:58:07,921 - xai.gshap_analysis - INFO - Processing model 1/1: Start
+2025-02-01 00:58:07,923 - xai.gshap_analysis - INFO - Loading data and model for filename_ca_housing_filter_col_None_filter_val_None_target_HouseAgeBinaryCat_ml_model_BalancedRandomForestCls_mh_algo_SCA
+2025-02-01 00:58:08,260 - xai.gshap_analysis - INFO - gSHAP started
+2025-02-01 00:58:08,271 - xai.gshap_analysis - INFO - Computing G-SHAP values for Class 0 vs. Class 1
+2025-02-01 01:11:49,639 - xai.gshap_analysis - INFO - Computing G-SHAP values for Class 1 vs. Class 0
+2025-02-01 01:25:18,436 - xai.gshap_analysis - INFO - gSHAP model failure
+2025-02-01 02:28:50,019 - xai.gshap_analysis - INFO - gSHAP intergroup difference
+2025-02-01 02:50:48,299 - xai.gshap_analysis - INFO - gSHAP mediation
+2025-02-01 09:24:13,343 - xai.gshap_analysis - INFO - Processing model 1/1: Start
+2025-02-01 09:24:13,345 - xai.gshap_analysis - INFO - Loading data and model for filename_ca_housing_filter_col_None_filter_val_None_target_HouseAgeBinaryCat_ml_model_BalancedRandomForestCls_mh_algo_SCA
+2025-02-01 09:24:13,568 - xai.gshap_analysis - INFO - gSHAP started
+2025-02-01 09:24:13,568 - xai.gshap_analysis - INFO - gSHAP intergroup difference
+2025-02-01 09:41:24,445 - xai.gshap_analysis - INFO - gSHAP completed
+2025-02-01 09:43:36,757 - xai.gshap_analysis - INFO - Processing model 1/1: Start
+2025-02-01 09:43:36,758 - xai.gshap_analysis - INFO - Loading data and model for filename_ca_housing_filter_col_None_filter_val_None_target_HouseAgeBinaryCat_ml_model_BalancedRandomForestCls_mh_algo_SCA
+2025-02-01 09:43:36,966 - xai.gshap_analysis - INFO - gSHAP started
+2025-02-01 09:43:36,966 - xai.gshap_analysis - INFO - gSHAP intergroup difference
+2025-02-01 10:01:26,179 - xai.gshap_analysis - INFO - gSHAP completed
+2025-02-01 10:04:40,805 - xai.gshap_analysis - INFO - Processing model 1/1: Start
+2025-02-01 10:04:40,805 - xai.gshap_analysis - INFO - Loading data and model for filename_ca_housing_filter_col_None_filter_val_None_target_HouseAgeBinaryCat_ml_model_BalancedRandomForestCls_mh_algo_SCA
+2025-02-01 10:04:41,025 - xai.gshap_analysis - INFO - gSHAP started
+2025-02-01 10:04:41,025 - xai.gshap_analysis - INFO - gSHAP intergroup difference
+2025-02-01 10:21:45,700 - xai.gshap_analysis - INFO - gSHAP completed

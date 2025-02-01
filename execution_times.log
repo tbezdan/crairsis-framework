@@ -3621,3 +3621,156 @@ ML Models:
 
 isage_calculation started at 2025-01-30 21:04:22 and ended at 2025-01-30 21:06:02, executed in 0d 0h 1m 40.1945s (100.1945 seconds)
 Global execution started at 2025-01-30 21:04:22 and ended at 2025-01-30 21:06:02, executed in 0d 0h 1m 40.1963s (100.1963 seconds)
+
+Execution Setup Information
+------------------------------------------------------
+Date and Time:                    2025-01-31 15:06:45
+User Name:                        timea_bezdan
+Task Type:                        classification
+Data Usage:                       test
+Number of Epochs:                 2
+Population Size:                  5
+SAGE Threshold:                   90
+Datetime Column:                  None
+Filter Column:                    None
+Dimensionality Reduction Method:  PaCMAP
+Subclustering:                    True
+Subcluster Probability Threshold: 0.6
+
+Targets:
+    - HouseAgeBinaryCat
+
+Metaheuristic Algorithms:
+    - SCA
+
+ML Models:
+    - BalancedRandomForestCls
+    - LGBMModel
+    - ExtraTreesModel
+    - HistGradientBoostingCls
+
+evaluate_best_models started at 2025-01-31 15:11:58 and ended at 2025-01-31 15:11:59, executed in 0d 0h 0m 0.5775s (0.5775 seconds)
+train_and_optimize_models started at 2025-01-31 15:06:45 and ended at 2025-01-31 15:11:59, executed in 0d 0h 5m 13.5542s (313.5542 seconds)
+shap_calculation started at 2025-01-31 15:11:59 and ended at 2025-01-31 15:12:00, executed in 0d 0h 0m 0.9566s (0.9566 seconds)
+shap_interactions started at 2025-01-31 15:12:00 and ended at 2025-01-31 15:12:01, executed in 0d 0h 0m 1.5696s (1.5696 seconds)
+shap_clustering started at 2025-01-31 15:12:01 and ended at 2025-01-31 15:12:10, executed in 0d 0h 0m 8.9577s (8.9577 seconds)
+sage_calculation started at 2025-01-31 15:12:10 and ended at 2025-01-31 15:13:16, executed in 0d 0h 1m 5.3096s (65.3096 seconds)
+nshap_calculation started at 2025-01-31 15:13:16 and ended at 2025-02-01 00:58:07, executed in 0d 9h 44m 51.1600s (35091.1600 seconds)
+
+Execution Setup Information
+------------------------------------------------------
+Date and Time:                    2025-02-01 09:24:13
+User Name:                        timea_bezdan
+Task Type:                        classification
+Data Usage:                       test
+Number of Epochs:                 2
+Population Size:                  5
+SAGE Threshold:                   90
+Datetime Column:                  None
+Filter Column:                    None
+Dimensionality Reduction Method:  PaCMAP
+Subclustering:                    True
+Subcluster Probability Threshold: 0.6
+
+Targets:
+    - HouseAgeBinaryCat
+
+Metaheuristic Algorithms:
+    - SCA
+
+ML Models:
+    - BalancedRandomForestCls
+    - LGBMModel
+    - ExtraTreesModel
+    - HistGradientBoostingCls
+
+nshap_calculation started at 2025-02-01 09:24:13 and ended at 2025-02-01 09:41:24, executed in 0d 0h 17m 11.1267s (1031.1267 seconds)
+Global execution started at 2025-02-01 09:24:13 and ended at 2025-02-01 09:41:24, executed in 0d 0h 17m 11.1284s (1031.1284 seconds)
+
+Execution Setup Information
+------------------------------------------------------
+Date and Time:                    2025-02-01 09:43:36
+User Name:                        timea_bezdan
+Task Type:                        classification
+Data Usage:                       test
+Number of Epochs:                 2
+Population Size:                  5
+SAGE Threshold:                   90
+Datetime Column:                  None
+Filter Column:                    None
+Dimensionality Reduction Method:  PaCMAP
+Subclustering:                    True
+Subcluster Probability Threshold: 0.6
+
+Targets:
+    - HouseAgeBinaryCat
+
+Metaheuristic Algorithms:
+    - SCA
+
+ML Models:
+    - BalancedRandomForestCls
+    - LGBMModel
+    - ExtraTreesModel
+    - HistGradientBoostingCls
+
+nshap_calculation started at 2025-02-01 09:43:36 and ended at 2025-02-01 10:01:26, executed in 0d 0h 17m 49.4307s (1069.4307 seconds)
+Global execution started at 2025-02-01 09:43:36 and ended at 2025-02-01 10:01:26, executed in 0d 0h 17m 49.4328s (1069.4328 seconds)
+
+Execution Setup Information
+------------------------------------------------------
+Date and Time:                    2025-02-01 10:04:40
+User Name:                        timea_bezdan
+Task Type:                        classification
+Data Usage:                       test
+Number of Epochs:                 2
+Population Size:                  5
+SAGE Threshold:                   90
+Datetime Column:                  None
+Filter Column:                    None
+Dimensionality Reduction Method:  PaCMAP
+Subclustering:                    True
+Subcluster Probability Threshold: 0.6
+
+Targets:
+    - HouseAgeBinaryCat
+
+Metaheuristic Algorithms:
+    - SCA
+
+ML Models:
+    - BalancedRandomForestCls
+    - LGBMModel
+    - ExtraTreesModel
+    - HistGradientBoostingCls
+
+nshap_calculation started at 2025-02-01 10:04:40 and ended at 2025-02-01 10:21:45, executed in 0d 0h 17m 4.9028s (1024.9028 seconds)
+Global execution started at 2025-02-01 10:04:40 and ended at 2025-02-01 10:21:45, executed in 0d 0h 17m 4.9054s (1024.9054 seconds)
+
+Execution Setup Information
+------------------------------------------------------
+Date and Time:                    2025-02-01 10:23:17
+User Name:                        timea_bezdan
+Task Type:                        classification
+Data Usage:                       test
+Number of Epochs:                 2
+Population Size:                  5
+SAGE Threshold:                   90
+Datetime Column:                  None
+Filter Column:                    None
+Dimensionality Reduction Method:  PaCMAP
+Subclustering:                    True
+Subcluster Probability Threshold: 0.6
+
+Targets:
+    - HouseAgeBinaryCat
+
+Metaheuristic Algorithms:
+    - SCA
+
+ML Models:
+    - BalancedRandomForestCls
+    - LGBMModel
+    - ExtraTreesModel
+    - HistGradientBoostingCls
+

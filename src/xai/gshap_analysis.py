@@ -650,20 +650,20 @@ def perform_gshap_analysis(
                 )
 
             elif task_type == "regression":
-                # reg_gshap(
-                #     gshap_folder, model, X_train, X_test, y_train, feature_names, file
-                # )
-                # logger.info("gSHAP model failure")
-                # reg_gshap_model_failure(
-                #     gshap_folder,
-                #     model,
-                #     X_train,
-                #     X_test,
-                #     y_train,
-                #     y_test,
-                #     feature_names,
-                #     file,
-                # )
+                reg_gshap(
+                    gshap_folder, model, X_train, X_test, y_train, feature_names, file
+                )
+                logger.info("gSHAP model failure")
+                reg_gshap_model_failure(
+                    gshap_folder,
+                    model,
+                    X_train,
+                    X_test,
+                    y_train,
+                    y_test,
+                    feature_names,
+                    file,
+                )
                 logger.info("gSHAP intergroup difference")
                 gshap_intergroup_difference(
                     gshap_folder,
@@ -677,21 +677,21 @@ def perform_gshap_analysis(
                     gshap_intergroup_difference_grouping_method,
                     gshap_intergroup_difference_grouping_value,
                 )
-                # logger.info("gSHAP mediation")
-                # gshap_mediation(
-                #     gshap_folder,
-                #     model,
-                #     X_train,
-                #     X_test,
-                #     y_train,
-                #     y_test,
-                #     feature_names,
-                #     file,
-                #     ml_model,
-                #     task_type,
-                #     independent_vars,
-                #     model_registry,
-                # )
+                logger.info("gSHAP mediation")
+                gshap_mediation(
+                    gshap_folder,
+                    model,
+                    X_train,
+                    X_test,
+                    y_train,
+                    y_test,
+                    feature_names,
+                    file,
+                    ml_model,
+                    task_type,
+                    independent_vars,
+                    model_registry,
+                )
                 logger.info("gSHAP hypothesis")
                 gshap_hypothesis(
                     gshap_folder,

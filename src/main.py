@@ -59,7 +59,7 @@ logger = setup_logger(__name__)
 # independent_vars = ["AveRooms", "AveBedrms"]
 
 
-ROOT = r"C:\Users\tbezdan\Desktop\crAIRsis datasets\reg_test"
+ROOT = r"C:\Users\tbezdan\Desktop\crAIRsis datasets\cls_test"
 paths = configure_paths(ROOT)
 
 
@@ -87,10 +87,10 @@ shap_subclusters_folder = paths["shap_subclusters_folder"]
 user_name = "timea_bezdan"
 num_epochs = 2
 population_size = 5
-targets = ["target"]
+targets = ["HouseAgeBinaryCat"]
 mh_algorithms = ["SCA"]
 filter_col = None
-task_type = "regression"
+task_type = "classification"
 data_usage = "test"
 datetime_col = None
 threshold = 90
@@ -109,10 +109,11 @@ else:
 # mediation
 gshap_mediation_independent_vars = ["Latitude", "Longitude"]
 # intergroup difference
-gshap_intergroup_difference_column_name = "HouseAge"
+gshap_intergroup_difference_column_name = "MedInc"
 gshap_intergroup_difference_selected_values = None
 gshap_intergroup_difference_grouping_method = "quantile"
 gshap_intergroup_difference_grouping_value = 75
+
 
 # hypothesis testing
 gshap_hypothesis_testing_hypothesis_treshold_method = "input"
@@ -124,7 +125,6 @@ gshap_hypothesis_testing_sample_treshold_value = 1.5
 
 gshap_hypothesis_testing_condition = "greater"
 
-
 ##########################################################################
 
 
@@ -135,7 +135,7 @@ tasks_to_execute = [
     # "shap_clustering",
     # "sage_calculation",
     # "nshap_calculation",
-    # "gshap_calculation",
+    "gshap_calculation",
     "isage_calculation",
 ]
 
@@ -488,10 +488,10 @@ def gshap_calculation(task_type, datetime_col):
     gshap_end_time = time.perf_counter()
     gshap_end_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     nshap_exec_time = gshap_end_time - gshap_start_time
-    print(f"nshap_calculation ended at {gshap_end_timestamp}")
+    print(f"gshap_calculation ended at {gshap_end_timestamp}")
     log_execution_time(
         ROOT,
-        "nshap_calculation",
+        "gshap_calculation",
         nshap_exec_time,
         gshap_start_timestamp,
         gshap_end_timestamp,
